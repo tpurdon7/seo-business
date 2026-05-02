@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { homeSeo, logo, siteName, siteUrl } from "@/lib/site";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -13,9 +15,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SearchRevenue SEO + GEO Visibility Agency",
-  description:
-    "A boutique SEO and GEO agency helping UK high-trust service businesses get found on Google and in AI search tools.",
+  metadataBase: new URL(siteUrl),
+  applicationName: siteName,
+  title: {
+    default: homeSeo.title,
+    template: "%s",
+  },
+  description: homeSeo.description,
+  openGraph: {
+    siteName,
+    locale: "en_GB",
+    type: "website",
+    images: [logo],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [logo.url],
+  },
 };
 
 export default function RootLayout({
