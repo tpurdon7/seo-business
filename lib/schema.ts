@@ -1,4 +1,5 @@
 import {
+  guidePages,
   homeFaqs,
   homeSeo,
   locationPages,
@@ -6,6 +7,7 @@ import {
   siteName,
   siteUrl,
   type FaqItem,
+  type GuidePage,
   type LocationPage,
 } from "@/lib/site";
 
@@ -15,6 +17,14 @@ const areaServed = [
   { "@type": "AdministrativeArea", name: "Cornwall" },
   { "@type": "AdministrativeArea", name: "Surrey" },
   { "@type": "Country", name: "United Kingdom" },
+];
+
+const audienceTypes = [
+  "service businesses",
+  "clinics",
+  "consultants",
+  "professional firms",
+  "specialist local services",
 ];
 
 function faqSchema(path: string, faqs: FaqItem[]) {
@@ -46,6 +56,7 @@ function organizationSchema() {
     },
     description:
       "Better Search is an SEO and GEO agency helping high-trust UK service businesses get found on Google and in AI search tools.",
+    areaServed,
   };
 }
 
@@ -70,11 +81,14 @@ function professionalServiceSchema() {
     serviceType: ["SEO", "GEO", "AI search optimisation", "Local SEO"],
     areaServed,
     serviceArea: areaServed,
-    audience: {
+    audience: audienceTypes.map((audienceType) => ({
       "@type": "Audience",
-      audienceType: "High-trust UK service businesses",
-    },
+      audienceType,
+    })),
+    knowsAbout: ["SEO", "GEO", "AI search optimisation", "Local SEO"],
     provider: { "@id": `${siteUrl}/#organization` },
+    description:
+      "SEO, GEO, AI search optimisation, and local SEO support for high-trust service businesses in Cornwall, Surrey, and across the UK.",
   };
 }
 
@@ -85,10 +99,10 @@ function serviceSchema(path = "/") {
     name: "SEO and GEO services for service businesses",
     serviceType: ["SEO", "Local SEO", "GEO", "AI search optimisation"],
     provider: { "@id": `${siteUrl}/#organization` },
-    audience: {
+    audience: audienceTypes.map((audienceType) => ({
       "@type": "Audience",
-      audienceType: "Service businesses",
-    },
+      audienceType,
+    })),
     areaServed,
     serviceArea: areaServed,
     description:
@@ -109,10 +123,16 @@ function webPageSchema(path: string, name: string, description: string) {
   };
 }
 
-function breadcrumbSchema(page: LocationPage) {
+function breadcrumbSchema({
+  path,
+  name,
+}: {
+  path: string;
+  name: string;
+}) {
   return {
     "@type": "BreadcrumbList",
-    "@id": `${siteUrl}${page.path}#breadcrumb`,
+    "@id": `${siteUrl}${path}#breadcrumb`,
     itemListElement: [
       {
         "@type": "ListItem",
@@ -123,8 +143,8 @@ function breadcrumbSchema(page: LocationPage) {
       {
         "@type": "ListItem",
         position: 2,
-        name: page.h1,
-        item: `${siteUrl}${page.path}`,
+        name,
+        item: `${siteUrl}${path}`,
       },
     ],
   };
@@ -156,7 +176,24 @@ export function locationJsonLd(slug: LocationPage["slug"]) {
       serviceSchema(page.path),
       webPageSchema(page.path, page.metaTitle, page.metaDescription),
       faqSchema(page.path, page.faqs),
-      breadcrumbSchema(page),
+      breadcrumbSchema({ path: page.path, name: page.h1 }),
+    ],
+  };
+}
+
+export function guideJsonLd(slug: GuidePage["slug"]) {
+  const page = guidePages[slug];
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema(),
+      websiteSchema(),
+      professionalServiceSchema(),
+      serviceSchema(page.path),
+      webPageSchema(page.path, page.metaTitle, page.metaDescription),
+      faqSchema(page.path, page.faqs),
+      breadcrumbSchema({ path: page.path, name: page.h1 }),
     ],
   };
 }

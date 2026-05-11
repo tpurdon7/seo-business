@@ -5,8 +5,8 @@ import { bookingLink } from "@/lib/site";
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-white px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-sm text-slate-500 lg:flex-row">
-        <p>Better Search SEO + GEO Visibility Agency serving Cornwall, Surrey, and the UK</p>
+      <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-sm text-slate-500 lg:flex-row lg:items-center">
+        <p>SEO and AI search visibility for service businesses in Cornwall, Surrey, and across the UK.</p>
         <div className="flex flex-wrap gap-x-5 gap-y-3">
           <Link className="hover:text-slate-950" href="/#services">
             Services
