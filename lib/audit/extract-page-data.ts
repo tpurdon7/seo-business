@@ -1,5 +1,3 @@
-import type { Page } from "playwright";
-
 import type { AuditExtractedData } from "@/lib/audit/types";
 import {
   cleanText,
@@ -25,7 +23,11 @@ type PageEvaluation = Omit<
   | "speed"
 >;
 
-export async function extractPageData(page: Page): Promise<PageEvaluation> {
+interface EvaluatablePage {
+  evaluate<T>(pageFunction: () => T | Promise<T>): Promise<T>;
+}
+
+export async function extractPageData(page: EvaluatablePage): Promise<PageEvaluation> {
   const extracted = await page.evaluate(() => {
     const clean = (value: string | null | undefined) => (value ?? "").replace(/\s+/g, " ").trim();
     const attr = (selector: string, attribute: string) =>
