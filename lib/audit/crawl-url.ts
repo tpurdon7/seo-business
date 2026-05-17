@@ -1,23 +1,23 @@
-import { chromium } from "playwright";
-
 import { extractPageData } from "@/lib/audit/extract-page-data";
 import type { AuditExtractedData, AvailabilityCheck } from "@/lib/audit/types";
 import { normalizeUrl } from "@/lib/audit/utils";
 
 const REQUEST_TIMEOUT_MS = 18_000;
 
-async function getBrowserLaunchOptions(isServerless: boolean) {
+async function launchBrowser(isServerless: boolean) {
   if (!isServerless) {
-    return { headless: true };
+    const { chromium } = await import("playwright");
+    return chromium.launch({ headless: true });
   }
 
   const sparticuzChromium = (await import("@sparticuz/chromium")).default;
+  const { chromium } = await import("playwright-core");
 
-  return {
+  return chromium.launch({
     args: sparticuzChromium.args,
     executablePath: await sparticuzChromium.executablePath(),
     headless: true,
-  };
+  });
 }
 
 async function checkAvailability(url: string): Promise<AvailabilityCheck> {
@@ -68,7 +68,7 @@ export async function crawlUrl(rawUrl: string): Promise<AuditExtractedData> {
   const sitemapUrl = `${parsed.origin}/sitemap.xml`;
   const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 
-  const browser = await chromium.launch(await getBrowserLaunchOptions(isServerless));
+  const browser = await launchBrowser(isServerless);
   const context = await browser.newContext({
     userAgent:
       "Mozilla/5.0 (compatible; BetterSearchAuditBot/0.1; +https://bettersearch.dev)",
