@@ -11,7 +11,7 @@ import { UrlInput } from "./components/UrlInput";
 
 const settingsKey = "better-search-audit-settings";
 const defaultSettings: AppSettings = {
-  apiBaseUrl: "http://127.0.0.1:3000",
+  apiBaseUrl: "https://seo-growth-agency.vercel.app",
   apiKey: "",
 };
 
