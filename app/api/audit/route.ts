@@ -5,7 +5,7 @@ import { generateAuditReport } from "@/lib/audit/generate-audit";
 import { scorePage } from "@/lib/audit/score-page";
 import { saveAudit } from "@/lib/audit/store";
 import type { AuditInput } from "@/lib/audit/types";
-import { makeAuditId, normalizeUrl } from "@/lib/audit/utils";
+import { makeUrlAuditId, normalizeUrl } from "@/lib/audit/utils";
 
 export const runtime = "nodejs";
 export const maxDuration = 45;
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     }
 
     const url = normalizeUrl(body.url);
-    const id = makeAuditId(url);
+    const id = makeUrlAuditId(url);
     const extractedData = await crawlUrl(url);
     const scores = scorePage(extractedData);
     const report = generateAuditReport(id, extractedData, scores);

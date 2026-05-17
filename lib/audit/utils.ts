@@ -143,3 +143,19 @@ export function makeAuditId(url: string) {
 
   return `audit-${Math.abs(hash).toString(36)}`;
 }
+
+export function makeUrlAuditId(url: string) {
+  return `url-${Buffer.from(url, "utf8").toString("base64url")}`;
+}
+
+export function urlFromAuditId(id: string) {
+  if (!id.startsWith("url-")) {
+    return null;
+  }
+
+  try {
+    return normalizeUrl(Buffer.from(id.slice(4), "base64url").toString("utf8"));
+  } catch {
+    return null;
+  }
+}

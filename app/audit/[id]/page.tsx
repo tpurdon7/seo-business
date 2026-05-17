@@ -3,9 +3,16 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, CheckCircle2, CircleAlert, ExternalLink, Gauge, LineChart, Sparkles } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { crawlUrl } from "@/lib/audit/crawl-url";
+import { generateAuditReport } from "@/lib/audit/generate-audit";
+import { scorePage } from "@/lib/audit/score-page";
+import { saveAudit } from "@/lib/audit/store";
 import { getAudit } from "@/lib/audit/store";
 import type { AuditFinding, AuditRecommendation, AuditScore } from "@/lib/audit/types";
+import { urlFromAuditId } from "@/lib/audit/utils";
 import { cn } from "@/lib/utils";
+
+export const maxDuration = 60;
 
 function scoreTone(score: number, max: number) {
   const percent = (score / max) * 100;
@@ -103,7 +110,27 @@ function RecommendationBlock({ recommendation }: { recommendation: AuditRecommen
 
 export default async function AuditReportPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const audit = getAudit(id);
+  let audit = getAudit(id);
+
+  if (!audit) {
+    const url = urlFromAuditId(id);
+
+    if (url) {
+      const extractedData = await crawlUrl(url);
+      const scores = scorePage(extractedData);
+      const report = generateAuditReport(id, extractedData, scores);
+      const createdAt = new Date().toISOString();
+
+      audit = saveAudit({
+        id,
+        input: { url },
+        extractedData,
+        scores,
+        report,
+        createdAt,
+      });
+    }
+  }
 
   if (!audit) {
     notFound();

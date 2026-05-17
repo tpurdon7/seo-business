@@ -3,7 +3,7 @@ import { crawlUrl } from "@/lib/audit/crawl-url";
 import { generateAuditReport } from "@/lib/audit/generate-audit";
 import { scorePage } from "@/lib/audit/score-page";
 import { saveAudit } from "@/lib/audit/store";
-import { makeAuditId } from "@/lib/audit/utils";
+import { makeUrlAuditId } from "@/lib/audit/utils";
 
 export async function processBatchAuditJob(jobId: string, urls: string[]) {
   for (const url of urls) {
@@ -19,7 +19,7 @@ export async function processBatchAuditJob(jobId: string, urls: string[]) {
         status: "auditing",
       });
 
-      const auditId = makeAuditId(url);
+      const auditId = makeUrlAuditId(url);
       const scores = scorePage(extractedData);
       const report = generateAuditReport(auditId, extractedData, scores);
       const createdAt = new Date().toISOString();
