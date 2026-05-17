@@ -1,0 +1,5 @@
+audit-mac-app
+.next
+node_modules
+output
+.playwright-cli
