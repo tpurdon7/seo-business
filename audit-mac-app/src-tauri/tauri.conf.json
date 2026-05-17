@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Better Search Audit",
+  "version": "0.1.0",
+  "identifier": "dev.bettersearch.audit",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Better Search Audit",
+        "width": 420,
+        "height": 520,
+        "minWidth": 360,
+        "minHeight": 480,
+        "resizable": true,
+        "alwaysOnTop": true,
+        "decorations": true,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["dmg", "app"],
+    "icon": []
+  }
+}

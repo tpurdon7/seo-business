@@ -11,6 +11,9 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "audit-mac-app/dist/**",
+    "audit-mac-app/node_modules/**",
+    "audit-mac-app/src-tauri/target/**",
     "next-env.d.ts",
   ]),
 ]);
