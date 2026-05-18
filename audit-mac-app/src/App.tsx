@@ -42,6 +42,14 @@ export function App() {
     localStorage.setItem(settingsKey, JSON.stringify(settings));
   }, [settings]);
 
+  function resetJobState() {
+    setJobId(null);
+    setJobStatus(null);
+    setAudits([]);
+    setRunning(false);
+    setError("");
+  }
+
   useEffect(() => {
     if (!jobId || jobStatus === "complete" || jobStatus === "failed") {
       return;
@@ -56,6 +64,7 @@ export function App() {
       } catch (caught) {
         setError(caught instanceof Error ? caught.message : "Could not poll the audit job.");
         setRunning(false);
+        setJobStatus("failed");
       }
     }, 1_200);
 
@@ -95,7 +104,7 @@ export function App() {
           <p>Better Search</p>
           <h1>Audit Machine</h1>
         </div>
-        <button className="ghost-button" type="button" onClick={() => setAudits([])} disabled={running}>
+        <button className="ghost-button" type="button" onClick={resetJobState} disabled={running}>
           Clear
         </button>
       </header>
@@ -121,7 +130,13 @@ export function App() {
         audits={audits}
       />
       <ReportLinks audits={audits} settings={settings} />
-      <Settings settings={settings} onChange={setSettings} />
+      <Settings
+        settings={settings}
+        onChange={(nextSettings) => {
+          setSettings(nextSettings);
+          resetJobState();
+        }}
+      />
     </main>
   );
 }
