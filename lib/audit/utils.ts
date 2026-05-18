@@ -78,7 +78,24 @@ export function statusLabel(status: CheckStatus) {
 export function totalScore(scores: AuditScore[]) {
   const earned = scores.reduce((sum, score) => sum + score.score, 0);
   const max = scores.reduce((sum, score) => sum + score.max, 0);
-  return max > 0 ? Math.round((earned / max) * 100) : 0;
+  const rawScore = max > 0 ? Math.round((earned / max) * 100) : 0;
+  const authority = scores.find((score) => score.category === "Authority");
+  const geoProof = scores
+    .find((score) => score.category === "GEO")
+    ?.items.find((item) => item.label === "Proof and authority signals");
+  const croProof = scores
+    .find((score) => score.category === "CRO")
+    ?.items.find((item) => item.label === "Trust and conversion proof");
+
+  if ((authority?.score ?? 0) === 0 && (geoProof?.points ?? 0) === 0 && (croProof?.points ?? 0) === 0) {
+    return Math.min(rawScore, 68);
+  }
+
+  if ((authority?.score ?? 0) <= 2) {
+    return Math.min(rawScore, 74);
+  }
+
+  return rawScore;
 }
 
 export function isLikelyCta(text: string) {

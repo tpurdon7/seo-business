@@ -51,6 +51,12 @@ function hasAudienceOrComparisonLanguage(data: AuditExtractedData) {
   );
 }
 
+function hasBuyerIntentLanguage(data: AuditExtractedData) {
+  return /\b(book|call|contact|request|quote|consultation|audit|pricing|cost|enquiry|enquire|schedule|get started|next step)\b/i.test(
+    firstPageCopy(data),
+  );
+}
+
 function hasQuestionHeading(data: AuditExtractedData) {
   return [...data.h2s, ...data.h3s].some((heading) => /\?|\b(how|what|why|when|where|who|which|can|does|do)\b/i.test(heading));
 }
@@ -75,16 +81,35 @@ function usefulAltCoverage(data: AuditExtractedData) {
   return Math.max(0, (data.imageCount - data.imagesMissingAlt.length) / data.imageCount);
 }
 
+function schemaText(data: AuditExtractedData) {
+  return JSON.stringify(data.jsonLd).toLowerCase();
+}
+
+function hasSchemaType(data: AuditExtractedData, type: string) {
+  return schemaText(data).includes(`"${type.toLowerCase()}"`);
+}
+
 function schemaEvidence(data: AuditExtractedData) {
   if (!data.rendered) {
     return notChecked("Schema and answer readiness", 5, "The page did not render successfully, so rendered JSON-LD could not be checked.");
   }
 
+  const hasEntitySchema =
+    hasSchemaType(data, "organization") ||
+    hasSchemaType(data, "localbusiness") ||
+    hasSchemaType(data, "professionalservice");
+  const hasServiceSchema = hasSchemaType(data, "service");
+  const hasAnswerSchema = hasSchemaType(data, "faqpage") || hasSchemaType(data, "qaPage");
+  const hasBreadcrumbSchema = hasSchemaType(data, "breadcrumblist");
+  const schemaPoints = [hasEntitySchema, hasServiceSchema, hasAnswerSchema, hasBreadcrumbSchema].filter(Boolean).length;
+
   return item(
     "Schema and answer readiness",
-    data.jsonLd.length >= 2 ? 5 : data.jsonLd.length === 1 ? 4 : 1,
+    schemaPoints >= 4 ? 5 : schemaPoints === 3 ? 4 : schemaPoints === 2 ? 3 : schemaPoints === 1 ? 2 : 0,
     5,
-    data.jsonLd.length > 0 ? `${data.jsonLd.length} JSON-LD block(s) found in the rendered DOM.` : "No rendered JSON-LD schema found.",
+    data.jsonLd.length > 0
+      ? `${data.jsonLd.length} JSON-LD block(s) found. Entity: ${hasEntitySchema ? "yes" : "no"}. Service: ${hasServiceSchema ? "yes" : "no"}. FAQ/answer: ${hasAnswerSchema ? "yes" : "no"}. Breadcrumb: ${hasBreadcrumbSchema ? "yes" : "no"}.`
+      : "No rendered JSON-LD schema found.",
   );
 }
 
@@ -101,6 +126,9 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
   const altCoverage = usefulAltCoverage(data);
   const hasCanonical = data.canonicalConsistency === "found";
   const crawlChecksKnown = data.robotsTxt.status !== "not_checked" || data.sitemapXml.status !== "not_checked";
+  const hasBuyerIntent = hasBuyerIntentLanguage(data);
+  const hasQuestionStructure = hasQuestionHeading(data);
+  const descriptiveH2s = descriptiveHeadingCount(data);
 
   const seo: AuditScore = {
     category: "SEO",
@@ -109,13 +137,29 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
     items: [
       item(
         "Title tag quality",
-        !titleLength ? 0 : titleLength >= 35 && titleLength <= 65 && serviceClear ? 5 : titleLength >= 25 && titleLength <= 70 ? 4 : 2,
+        !titleLength
+          ? 0
+          : titleLength >= 35 && titleLength <= 65 && serviceClear && (locationClear || hasBuyerIntent)
+            ? 5
+            : titleLength >= 30 && titleLength <= 70 && serviceClear
+              ? 3
+              : titleLength > 0
+                ? 1
+                : 0,
         5,
         data.title ? `Title is ${titleLength} characters: ${data.title}` : "No page title found.",
       ),
       item(
         "Meta description quality",
-        !metaLength ? 0 : metaLength >= 120 && metaLength <= 170 && serviceClear ? 5 : metaLength >= 70 && metaLength <= 180 ? 4 : 2,
+        !metaLength
+          ? 0
+          : metaLength >= 120 && metaLength <= 170 && serviceClear && hasBuyerIntent
+            ? 5
+            : metaLength >= 90 && metaLength <= 180 && serviceClear
+              ? 3
+              : metaLength > 0
+                ? 1
+                : 0,
         5,
         data.metaDescription
           ? `Meta description is ${metaLength} characters: ${data.metaDescription}`
@@ -123,38 +167,38 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
       ),
       item(
         "Heading structure",
-        h1Count === 1 && data.h2s.length >= 3
+        h1Count === 1 && descriptiveH2s >= 5
           ? 5
-          : h1Count === 1 && data.h2s.length >= 1
-            ? 4
+          : h1Count === 1 && descriptiveH2s >= 3
+            ? 3
             : h1Count > 1
-              ? 2
+              ? 1
               : 0,
         5,
-        `H1 count: ${h1Count}. H1: ${shortEvidence(data.h1)}. H2 count: ${data.h2s.length}.`,
+        `H1 count: ${h1Count}. H1: ${shortEvidence(data.h1)}. H2 count: ${data.h2s.length}. Descriptive H2 count: ${descriptiveH2s}.`,
       ),
       item(
         "Keyword and search intent clarity",
-        serviceClear && data.approximateWordCount >= 350
+        serviceClear && hasBuyerIntent && data.approximateWordCount >= 600
           ? 5
-          : serviceClear && data.approximateWordCount >= 180
-            ? 4
+          : serviceClear && data.approximateWordCount >= 350
+            ? 3
             : serviceClear
-              ? 3
-              : 1,
+              ? 2
+              : 0,
         5,
-        `Service/category terms checked in title, meta, H1, and opening copy. First 100 words: ${shortEvidence(data.first100Words)}`,
+        `Service/category and buyer-intent terms checked in title, meta, H1, and opening copy. First 100 words: ${shortEvidence(data.first100Words)}`,
       ),
       crawlChecksKnown
         ? item(
             "Internal linking and crawlability basics",
-            statusOk && data.internalLinks.length >= 5 && data.robotsTxt.status === "found" && data.sitemapXml.status === "found"
+            statusOk && data.internalLinks.length >= 8 && data.robotsTxt.status === "found" && data.sitemapXml.status === "found"
               ? 5
-              : statusOk && data.internalLinks.length > 0 && data.robotsTxt.status !== "not_found"
-                ? 4
-                : statusOk || data.internalLinks.length > 0
+              : statusOk && data.internalLinks.length >= 3 && data.robotsTxt.status !== "not_found"
+                ? 3
+                : statusOk && data.internalLinks.length > 0
                   ? 2
-                  : 1,
+                  : 0,
             5,
             `Status code: ${data.statusCode ?? "not checked"}. Internal links: ${data.internalLinks.length}. Robots.txt: ${data.robotsTxt.status}. Sitemap.xml: ${data.sitemapXml.status}.`,
           )
@@ -165,12 +209,12 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
           ),
       item(
         "Image, canonical, indexability basics",
-        !data.noindex && hasCanonical && data.mobileViewport === "found" && altCoverage >= 0.9
+        !data.noindex && hasCanonical && data.mobileViewport === "found" && altCoverage === 1
           ? 5
-          : !data.noindex && data.canonicalUrl && data.mobileViewport === "found" && altCoverage >= 0.6
-            ? 4
+          : !data.noindex && data.canonicalUrl && data.mobileViewport === "found" && altCoverage >= 0.8
+            ? 3
             : !data.noindex && (data.canonicalUrl || data.mobileViewport === "found")
-              ? 2
+              ? 1
               : 0,
         5,
         `Canonical: ${shortEvidence(data.canonicalUrl)}. Canonical consistency: ${data.canonicalConsistency}. Mobile viewport: ${data.mobileViewport}. Missing image alt text: ${data.imagesMissingAlt.length}/${data.imageCount}. Noindex: ${data.noindex ? "yes" : "no"}.`,
@@ -185,13 +229,19 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
     items: [
       item(
         "Clear entity positioning",
-        data.h1 && data.title && data.metaDescription ? 5 : data.h1 && (data.title || data.metaDescription) ? 4 : data.h1 || data.title ? 2 : 0,
+        data.h1 && data.title && data.metaDescription && serviceClear && hasBuyerIntent
+          ? 5
+          : data.h1 && data.title && serviceClear
+            ? 3
+            : data.h1 || data.title
+              ? 1
+              : 0,
         5,
         `Title: ${shortEvidence(data.title)}. H1: ${shortEvidence(data.h1)}. Meta: ${shortEvidence(data.metaDescription)}.`,
       ),
       item(
         "Service and category clarity",
-        serviceClear ? 5 : 1,
+        serviceClear && descriptiveH2s >= 3 ? 5 : serviceClear ? 3 : 0,
         5,
         serviceClear
           ? "Service/category language found in title, meta, H1, or opening copy."
@@ -199,13 +249,21 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
       ),
       item(
         "Location and market relevance",
-        locationClear ? 5 : 1,
+        locationClear ? 5 : 0,
         5,
         locationClear ? "Location, market, or service-area language found." : "No strong location, market, or service-area signal found in key page copy.",
       ),
       item(
         "Proof and authority signals",
-        hasTrust && hasContact ? 5 : hasTrust ? 4 : hasContact ? 2 : 1,
+        data.trustSignals.length >= 3 && hasContact
+          ? 5
+          : data.trustSignals.length >= 2
+            ? 3
+            : hasTrust
+              ? 2
+              : hasContact
+                ? 1
+                : 0,
         5,
         hasTrust
           ? data.trustSignals.slice(0, 2).join(" ")
@@ -215,7 +273,7 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
       ),
       item(
         "Comparison and audience language",
-        hasAudienceOrComparisonLanguage(data) ? 5 : 1,
+        hasAudienceOrComparisonLanguage(data) && hasBuyerIntent ? 5 : hasAudienceOrComparisonLanguage(data) ? 3 : 0,
         5,
         hasAudienceOrComparisonLanguage(data)
           ? "Buyer-fit, audience, category, or comparison language found."
@@ -231,21 +289,31 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
     items: [
       item(
         "FAQ or question-answer structure",
-        hasQuestionHeading(data) ? 5 : /\bfaq|frequently asked/i.test(data.visibleBodyText) ? 3 : 1,
+        hasQuestionStructure && /\bfaq|frequently asked/i.test(data.visibleBodyText)
+          ? 5
+          : hasQuestionStructure
+            ? 3
+            : /\bfaq|frequently asked/i.test(data.visibleBodyText)
+              ? 1
+              : 0,
         5,
         hasQuestionHeading(data) ? "Question-style H2/H3 headings found." : "No question-style H2/H3 headings found.",
       ),
       item(
         "Clear definitions and concise explanations",
-        hasDefinitionOrPlainExplanation(data) && data.first100Words.length > 120 ? 5 : hasDefinitionOrPlainExplanation(data) ? 3 : 1,
+        hasDefinitionOrPlainExplanation(data) && data.first100Words.length > 180 && serviceClear
+          ? 5
+          : hasDefinitionOrPlainExplanation(data) && serviceClear
+            ? 3
+            : 0,
         5,
         `Opening copy: ${shortEvidence(data.first100Words)}`,
       ),
       item(
         "Structured sections with descriptive headings",
-        descriptiveHeadingCount(data) >= 4 ? 5 : descriptiveHeadingCount(data) >= 2 ? 3 : 1,
+        descriptiveH2s >= 6 ? 5 : descriptiveH2s >= 4 ? 3 : descriptiveH2s >= 2 ? 1 : 0,
         5,
-        `${data.h2s.length} H2 headings found. ${descriptiveHeadingCount(data)} appear descriptive enough for answer extraction.`,
+        `${data.h2s.length} H2 headings found. ${descriptiveH2s} appear descriptive enough for answer extraction.`,
       ),
       schemaEvidence(data),
     ],
@@ -258,19 +326,25 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
     items: [
       item(
         "Clear above-the-fold value proposition",
-        data.h1 && serviceClear && data.first100Words.length > 120 ? 5 : data.h1 && serviceClear ? 4 : data.h1 ? 2 : 0,
+        data.h1 && serviceClear && hasBuyerIntent && data.first100Words.length > 180
+          ? 5
+          : data.h1 && serviceClear
+            ? 3
+            : data.h1
+              ? 1
+              : 0,
         5,
         `H1 and opening copy reviewed: ${shortEvidence(data.h1)}. First 100 words: ${shortEvidence(data.first100Words)}`,
       ),
       item(
         "CTA clarity",
-        hasCta ? (data.ctas.length >= 2 ? 5 : 4) : 1,
+        data.ctas.length >= 2 && hasBuyerIntent ? 5 : hasCta ? 3 : 0,
         5,
         hasCta ? `CTA text found: ${data.ctas.map((cta) => cta.text).slice(0, 6).join(", ")}.` : "No clear CTA text found.",
       ),
       item(
         "Trust and conversion proof",
-        hasTrust ? 5 : hasContact ? 3 : 1,
+        data.trustSignals.length >= 3 ? 5 : data.trustSignals.length >= 1 ? 3 : hasContact ? 1 : 0,
         5,
         hasTrust
           ? data.trustSignals.slice(0, 2).join(" ")
@@ -288,7 +362,7 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
     items: [
       item(
         "Visible credibility indicators",
-        Math.min(10, data.trustSignals.length * 2 + (hasContact ? 1 : 0) + (data.externalLinks.length >= 2 ? 1 : 0)),
+        Math.min(10, data.trustSignals.length * 2 + (data.trustSignals.length > 0 && hasContact ? 1 : 0)),
         10,
         `${data.trustSignals.length} trust signal line(s), ${data.contactDetails.length} contact detail(s), and ${data.externalLinks.length} external link(s) found.`,
       ),
