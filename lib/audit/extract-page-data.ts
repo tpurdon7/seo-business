@@ -98,6 +98,7 @@ export async function extractPageData(page: EvaluatablePage): Promise<PageEvalua
       viewport: attr('meta[name="viewport"]', "content"),
       htmlLang: document.documentElement.lang || null,
       h1: text("h1") || null,
+      h1s: Array.from(document.querySelectorAll("h1")).map((heading) => clean(heading.textContent)).filter(Boolean),
       h2s: Array.from(document.querySelectorAll("h2")).map((heading) => clean(heading.textContent)).filter(Boolean),
       h3s: Array.from(document.querySelectorAll("h3")).map((heading) => clean(heading.textContent)).filter(Boolean),
       visibleBodyText: visibleText,

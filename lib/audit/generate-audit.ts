@@ -72,7 +72,7 @@ function makeFindings(data: AuditExtractedData, scores: AuditScore[]): AuditFind
       category: "SEO",
       issue: "The heading structure does not clearly map the page.",
       whyItMatters: "Good headings help Google, AI search tools, and users understand what the page covers.",
-      evidence: `H1: ${shortEvidence(data.h1)}. H2 count: ${data.h2s.length}.`,
+      evidence: `H1 count: ${data.h1s.length || (data.h1 ? 1 : 0)}. H1: ${shortEvidence(data.h1)}. H2 count: ${data.h2s.length}.`,
       recommendedFix: "Use one clear H1 and add descriptive H2s for service, proof, process, location, FAQs, and next steps.",
       impact: "High",
       effort: "Low",
@@ -89,6 +89,32 @@ function makeFindings(data: AuditExtractedData, scores: AuditScore[]): AuditFind
       recommendedFix: "Use a self-referencing canonical, remove accidental noindex tags, and add useful alt text to meaningful images.",
       impact: "High",
       effort: "Medium",
+    });
+  }
+
+  if (data.statusCode && (data.statusCode < 200 || data.statusCode >= 400)) {
+    findings.push({
+      priority: "Fix now",
+      category: "SEO",
+      issue: "The page did not return a clean successful status.",
+      whyItMatters: "Search engines need the final landing page to resolve reliably before they can index and rank it.",
+      evidence: `Status code: ${data.statusCode}. Final URL: ${data.finalUrl}.`,
+      recommendedFix: "Check redirects, server responses, blocking rules, and any authentication or bot protection affecting the page.",
+      impact: "High",
+      effort: "Medium",
+    });
+  }
+
+  if (data.robotsTxt.status === "not_checked" || data.sitemapXml.status === "not_checked") {
+    findings.push({
+      priority: "Build over time",
+      category: "SEO",
+      issue: "Some crawlability checks could not be completed.",
+      whyItMatters: "Robots.txt and sitemap.xml help confirm how search engines are allowed to discover and crawl the site.",
+      evidence: `Robots.txt: ${data.robotsTxt.status}. Sitemap.xml: ${data.sitemapXml.status}.`,
+      recommendedFix: "Re-run the audit when the site is reachable without blocking, then verify robots.txt and sitemap.xml directly.",
+      impact: "Medium",
+      effort: "Low",
     });
   }
 
@@ -311,8 +337,15 @@ export function generateAuditReport(id: string, data: AuditExtractedData, scores
       title: shortEvidence(data.title),
       metaDescription: shortEvidence(data.metaDescription),
       h1: shortEvidence(data.h1),
+      h1Count: data.h1s.length || (data.h1 ? 1 : 0),
       h2Count: data.h2s.length,
       wordCount: data.approximateWordCount,
+      statusCode: data.statusCode ? String(data.statusCode) : "Not checked",
+      canonicalUrl: shortEvidence(data.canonicalUrl),
+      canonicalConsistency: statusLabel(data.canonicalConsistency),
+      robotsMeta: shortEvidence(data.robotsMeta),
+      viewport: data.viewport ? "Found" : "Not found",
+      htmlLang: shortEvidence(data.htmlLang),
       schema: data.jsonLd.length > 0 ? `Found ${data.jsonLd.length}` : "Not found",
       sitemap: statusLabel(data.sitemapXml.status),
       robots: statusLabel(data.robotsTxt.status),

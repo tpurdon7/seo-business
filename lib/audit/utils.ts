@@ -16,23 +16,29 @@ const ctaWords = [
   "schedule",
 ];
 
-const trustWords = [
-  "reviews",
-  "testimonial",
-  "testimonials",
-  "case study",
-  "case studies",
-  "accredited",
-  "certified",
-  "award",
-  "featured",
-  "trusted by",
-  "clients",
-  "partners",
-  "press",
-  "years",
-  "rating",
-  "stars",
+const trustSignalPatterns = [
+  /\btrusted by\b/i,
+  /\btestimonial(s)?\b/i,
+  /\bcase stud(y|ies)\b/i,
+  /\baccredited\b/i,
+  /\bcertified\b/i,
+  /\baward(-|\s)?winning\b/i,
+  /\bfeatured (in|on|by)\b/i,
+  /\bas seen (in|on)\b/i,
+  /\bpress mention(s)?\b/i,
+  /\b\d+(\.\d+)?\s?(\/\s?5|stars?|star rating)\b/i,
+  /\b\d+\+?\s?(reviews?|clients?|customers?|projects?|years)\b/i,
+  /\b(five|5)[-\s]?star\b/i,
+];
+
+const genericTrustPhrases = [
+  /\bread reviews\b/i,
+  /\blook for signs\b/i,
+  /\btrust signals?\b/i,
+  /\bproof\b/i,
+  /\bwe help\b/i,
+  /\bshould\b/i,
+  /\bcan make\b/i,
 ];
 
 export function normalizeUrl(rawUrl: string) {
@@ -88,7 +94,8 @@ export function findTrustSignalLines(text: string) {
 
   const matches = lines.filter((line) => {
     const normal = line.toLowerCase();
-    return trustWords.some((word) => normal.includes(word));
+    if (genericTrustPhrases.some((pattern) => pattern.test(normal))) return false;
+    return trustSignalPatterns.some((pattern) => pattern.test(normal));
   });
 
   return Array.from(new Set(matches)).slice(0, 12);

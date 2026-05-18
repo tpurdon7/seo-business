@@ -47,6 +47,7 @@ export interface AuditExtractedData {
   viewport: string | null;
   htmlLang: string | null;
   h1: string | null;
+  h1s: string[];
   h2s: string[];
   h3s: string[];
   visibleBodyText: string;
@@ -132,8 +133,15 @@ export interface AuditReport {
     title: string;
     metaDescription: string;
     h1: string;
+    h1Count: number;
     h2Count: number;
     wordCount: number;
+    statusCode: string;
+    canonicalUrl: string;
+    canonicalConsistency: string;
+    robotsMeta: string;
+    viewport: string;
+    htmlLang: string;
     schema: string;
     sitemap: string;
     robots: string;
