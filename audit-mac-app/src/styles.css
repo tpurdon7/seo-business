@@ -412,7 +412,10 @@ input:focus {
   box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.16);
 }
 
-.url-count {
+.run-dock {
+  position: sticky;
+  bottom: 10px;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -427,7 +430,7 @@ input:focus {
   font-size: 13px;
 }
 
-.url-count > div {
+.run-dock > div {
   min-width: 0;
 }
 

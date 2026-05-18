@@ -35,7 +35,8 @@ export function App() {
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
 
-  const pendingUrls = useMemo(() => Array.from(new Set(urls)), [urls]);
+  const draftUrls = useMemo(() => parseUrls(draft), [draft]);
+  const pendingUrls = useMemo(() => Array.from(new Set([...urls, ...draftUrls])), [draftUrls, urls]);
   const completed = audits.filter((audit) => audit.status === "complete").length;
   const failed = audits.filter((audit) => audit.status === "failed").length;
 
@@ -183,7 +184,7 @@ export function App() {
         />
       ) : null}
 
-      {pendingUrls.length > 0 ? <div className="url-count">
+      {pendingUrls.length > 0 ? <div className="run-dock">
         <div>
           <span>{pendingUrls.length} URL{pendingUrls.length === 1 ? "" : "s"} ready</span>
           <div className="pending-preview">
