@@ -175,11 +175,6 @@ export function App() {
           value={draft}
           onChange={setDraft}
           onAdd={addDraftUrls}
-          onUrls={(nextUrls) => {
-            addUrls(nextUrls);
-            setDraft("");
-            setError("");
-          }}
         />
       ) : null}
 

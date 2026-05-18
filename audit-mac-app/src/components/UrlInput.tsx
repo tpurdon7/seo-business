@@ -4,10 +4,9 @@ interface UrlInputProps {
   value: string;
   onChange: (value: string) => void;
   onAdd: () => void;
-  onUrls: (urls: string[]) => void;
 }
 
-export function UrlInput({ value, onChange, onAdd, onUrls }: UrlInputProps) {
+export function UrlInput({ value, onChange, onAdd }: UrlInputProps) {
   const parsedUrls = parseUrls(value);
 
   return (
@@ -19,14 +18,6 @@ export function UrlInput({ value, onChange, onAdd, onUrls }: UrlInputProps) {
       <textarea
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        onPaste={(event) => {
-          const pastedUrls = parseUrls(event.clipboardData.getData("text/plain"));
-
-          if (pastedUrls.length > 0) {
-            event.preventDefault();
-            onUrls(pastedUrls);
-          }
-        }}
         placeholder="https://example.com/service-page"
         rows={4}
       />
