@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { createBatchAudit, getAuditJob } from "./lib/api";
-import { parseUrls } from "./lib/parseUrls";
+import { parseUrlFiles, parseUrls } from "./lib/parseUrls";
 import type { AppSettings, AuditJobItem, JobStatus } from "./lib/types";
 import { DropZone } from "./components/DropZone";
 import { JobProgress } from "./components/JobProgress";
@@ -28,6 +28,7 @@ export function App() {
   const [settings, setSettings] = useState<AppSettings>(loadSettings);
   const [draft, setDraft] = useState("");
   const [urls, setUrls] = useState<string[]>([]);
+  const [showUrlInput, setShowUrlInput] = useState(false);
   const [jobId, setJobId] = useState<string | null>(null);
   const [jobStatus, setJobStatus] = useState<JobStatus | null>(null);
   const [audits, setAudits] = useState<AuditJobItem[]>([]);
@@ -109,15 +110,57 @@ export function App() {
         </button>
       </header>
 
-      <DropZone onUrls={addUrls} />
-      <UrlInput value={draft} onChange={setDraft} onUrls={addUrls} />
+      <section className={running ? "crab-stage crab-stage-active" : "crab-stage"}>
+        <div className="crab-scene" aria-hidden="true">
+          <div className="crab-shadow" />
+          <div className="crab">
+            <span className="claw claw-left" />
+            <span className="claw claw-right" />
+            <span className="eye eye-left" />
+            <span className="eye eye-right" />
+            <span className="shell" />
+            <span className="leg leg-1" />
+            <span className="leg leg-2" />
+            <span className="leg leg-3" />
+            <span className="leg leg-4" />
+          </div>
+        </div>
+        <div>
+          <span className="status-kicker">{running ? "Claude crab is auditing" : "Ready for URLs"}</span>
+          <h2>{running ? "Claws are swinging through the audit queue" : "Drop, paste, or upload a prospect list"}</h2>
+          <p>{running ? "The Mac app is only sending URLs. The Better Search backend is crawling, scoring, and building the reports." : "Add one page or a list. Full page content stays with the backend crawl."}</p>
+        </div>
+      </section>
 
-      <div className="url-count">
+      <DropZone onUrls={addUrls} />
+
+      <div className="quick-actions">
+        <label className="action-button">
+          Upload list
+          <input
+            type="file"
+            accept=".txt,.csv,text/plain,text/csv"
+            multiple
+            onChange={async (event) => {
+              const files = event.currentTarget.files;
+              if (!files) return;
+              addUrls(await parseUrlFiles(files));
+            }}
+          />
+        </label>
+        <button className="action-button action-button-secondary" type="button" onClick={() => setShowUrlInput((current) => !current)}>
+          {showUrlInput ? "Hide URL box" : "Add URL"}
+        </button>
+      </div>
+
+      {showUrlInput || draft ? <UrlInput value={draft} onChange={setDraft} onUrls={addUrls} /> : null}
+
+      {pendingUrls.length > 0 ? <div className="url-count">
         <span>{pendingUrls.length} URL{pendingUrls.length === 1 ? "" : "s"} ready</span>
         <button className="primary-button" type="button" onClick={runAudit} disabled={running}>
           {running ? "Running" : "Run audit"}
         </button>
-      </div>
+      </div> : null}
 
       {error ? <div className="error-box">{error}</div> : null}
 

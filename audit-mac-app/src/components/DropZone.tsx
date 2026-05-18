@@ -44,22 +44,8 @@ export function DropZone({ onUrls }: DropZoneProps) {
       onDragLeave={() => setDragging(false)}
       onDrop={handleDrop}
     >
-      <div className="drop-icon" aria-hidden="true" />
       <p>{message}</p>
-      <span>URLs only. The app never sends page content.</span>
-      <label className="file-button">
-        Upload list
-        <input
-          type="file"
-          accept=".txt,.csv,text/plain,text/csv"
-          multiple
-          onChange={(event) => {
-            if (event.currentTarget.files) {
-              void handleFiles(event.currentTarget.files);
-            }
-          }}
-        />
-      </label>
+      <span>Drag URLs, text files, or CSVs here.</span>
     </div>
   );
 }

@@ -10,7 +10,7 @@ export function UrlInput({ value, onChange, onUrls }: UrlInputProps) {
   return (
     <section className="panel">
       <div className="panel-heading">
-        <h2>Add URLs</h2>
+        <h2>Add URL</h2>
         <span>Paste one or many</span>
       </div>
       <textarea
