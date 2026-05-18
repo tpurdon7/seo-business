@@ -79,6 +79,7 @@ export function totalScore(scores: AuditScore[]) {
   const earned = scores.reduce((sum, score) => sum + score.score, 0);
   const max = scores.reduce((sum, score) => sum + score.max, 0);
   const rawScore = max > 0 ? Math.round((earned / max) * 100) : 0;
+  const seo = scores.find((score) => score.category === "SEO");
   const authority = scores.find((score) => score.category === "Authority");
   const geoProof = scores
     .find((score) => score.category === "GEO")
@@ -86,16 +87,39 @@ export function totalScore(scores: AuditScore[]) {
   const croProof = scores
     .find((score) => score.category === "CRO")
     ?.items.find((item) => item.label === "Trust and conversion proof");
+  const cta = scores
+    .find((score) => score.category === "CRO")
+    ?.items.find((item) => item.label === "CTA clarity");
+  const crawlability = seo?.items.find((item) => item.label === "Internal linking and crawlability basics");
+  const indexability = seo?.items.find((item) => item.label === "Image, canonical, indexability basics");
+  const title = seo?.items.find((item) => item.label === "Title tag quality");
+  const meta = seo?.items.find((item) => item.label === "Meta description quality");
+  const heading = seo?.items.find((item) => item.label === "Heading structure");
+  const notCheckedCount = scores.flatMap((score) => score.items).filter((item) => item.status === "not_checked").length;
+
+  const caps: number[] = [];
+
+  if ((crawlability?.points ?? 0) === 0) caps.push(48);
+  if ((indexability?.points ?? 0) === 0) caps.push(52);
+  if ((title?.points ?? 0) === 0 || (meta?.points ?? 0) === 0 || (heading?.points ?? 0) === 0) caps.push(58);
+  if ((cta?.points ?? 0) === 0) caps.push(62);
 
   if ((authority?.score ?? 0) === 0 && (geoProof?.points ?? 0) === 0 && (croProof?.points ?? 0) === 0) {
-    return Math.min(rawScore, 68);
+    caps.push(59);
   }
 
   if ((authority?.score ?? 0) <= 2) {
-    return Math.min(rawScore, 74);
+    caps.push(64);
   }
 
-  return rawScore;
+  if ((authority?.score ?? 0) <= 4) {
+    caps.push(72);
+  }
+
+  if (notCheckedCount >= 2) caps.push(70);
+  if (notCheckedCount >= 4) caps.push(58);
+
+  return caps.length > 0 ? Math.min(rawScore, ...caps) : rawScore;
 }
 
 export function isLikelyCta(text: string) {

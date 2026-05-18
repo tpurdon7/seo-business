@@ -113,6 +113,85 @@ function schemaEvidence(data: AuditExtractedData) {
   );
 }
 
+function findScoreItem(score: AuditScore, label: string) {
+  return score.items.find((scoreItem) => scoreItem.label === label);
+}
+
+function applyHonestCategoryCap(score: AuditScore): AuditScore {
+  let cappedScore = score.score;
+
+  if (score.category === "SEO") {
+    const title = findScoreItem(score, "Title tag quality");
+    const meta = findScoreItem(score, "Meta description quality");
+    const heading = findScoreItem(score, "Heading structure");
+    const crawlability = findScoreItem(score, "Internal linking and crawlability basics");
+    const indexability = findScoreItem(score, "Image, canonical, indexability basics");
+
+    if ((title?.points ?? 0) === 0 || (meta?.points ?? 0) === 0 || (heading?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 15);
+    }
+
+    if ((crawlability?.points ?? 0) <= 2) {
+      cappedScore = Math.min(cappedScore, 20);
+    }
+
+    if ((indexability?.points ?? 0) <= 1) {
+      cappedScore = Math.min(cappedScore, 18);
+    } else if ((indexability?.points ?? 0) <= 3) {
+      cappedScore = Math.min(cappedScore, 24);
+    }
+  }
+
+  if (score.category === "GEO") {
+    const proof = findScoreItem(score, "Proof and authority signals");
+    const location = findScoreItem(score, "Location and market relevance");
+    const category = findScoreItem(score, "Service and category clarity");
+
+    if ((category?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 10);
+    }
+
+    if ((location?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 16);
+    }
+
+    if ((proof?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 15);
+    }
+  }
+
+  if (score.category === "AEO") {
+    const faq = findScoreItem(score, "FAQ or question-answer structure");
+    const schema = findScoreItem(score, "Schema and answer readiness");
+
+    if ((faq?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 11);
+    }
+
+    if ((schema?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 12);
+    }
+  }
+
+  if (score.category === "CRO") {
+    const cta = findScoreItem(score, "CTA clarity");
+    const trust = findScoreItem(score, "Trust and conversion proof");
+
+    if ((cta?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 6);
+    }
+
+    if ((trust?.points ?? 0) === 0) {
+      cappedScore = Math.min(cappedScore, 9);
+    }
+  }
+
+  return {
+    ...score,
+    score: cappedScore,
+  };
+}
+
 export function scorePage(data: AuditExtractedData): AuditScore[] {
   const titleLength = cleanText(data.title).length;
   const metaLength = cleanText(data.metaDescription).length;
@@ -369,8 +448,10 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
     ],
   };
 
-  return [seo, geo, aeo, cro, authority].map((score) => ({
-    ...score,
-    score: score.items.reduce((sum, scoreItem) => sum + scoreItem.points, 0),
-  }));
+  return [seo, geo, aeo, cro, authority]
+    .map((score) => ({
+      ...score,
+      score: score.items.reduce((sum, scoreItem) => sum + scoreItem.points, 0),
+    }))
+    .map(applyHonestCategoryCap);
 }
