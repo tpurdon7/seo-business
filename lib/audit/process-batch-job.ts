@@ -1,4 +1,4 @@
-import { reportPathForAudit, updateBatchAuditItem } from "@/lib/audit/batch-store";
+import { getBatchAuditJob, reportPathForAudit, updateBatchAuditItem } from "@/lib/audit/batch-store";
 import { crawlUrl } from "@/lib/audit/crawl-url";
 import { generateAuditReport } from "@/lib/audit/generate-audit";
 import { scorePage } from "@/lib/audit/score-page";
@@ -46,4 +46,17 @@ export async function processBatchAuditJob(jobId: string, urls: string[]) {
       });
     }
   }
+}
+
+export async function processNextQueuedBatchAudit(jobId: string) {
+  const job = getBatchAuditJob(jobId);
+  const nextAudit = job?.audits.find((audit) => audit.status === "queued");
+
+  if (!nextAudit) {
+    return getBatchAuditJob(jobId);
+  }
+
+  await processBatchAuditJob(jobId, [nextAudit.url]);
+
+  return getBatchAuditJob(jobId);
 }

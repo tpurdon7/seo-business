@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { auditApiCorsHeaders } from "@/lib/audit/api-headers";
 import { createBatchAuditJob, getBatchAuditJob } from "@/lib/audit/batch-store";
-import { processBatchAuditJob } from "@/lib/audit/process-batch-job";
+import { processNextQueuedBatchAudit } from "@/lib/audit/process-batch-job";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -32,13 +32,8 @@ export async function POST(request: Request) {
     }
 
     const job = createBatchAuditJob(urls);
-    const jobUrls = job.audits.map((audit) => audit.url);
 
-    if (process.env.VERCEL) {
-      await processBatchAuditJob(job.jobId, jobUrls);
-    } else {
-      void processBatchAuditJob(job.jobId, jobUrls);
-    }
+    await processNextQueuedBatchAudit(job.jobId);
 
     const responseJob = getBatchAuditJob(job.jobId) ?? job;
 
