@@ -129,7 +129,7 @@ export function App() {
         failed={failed}
         audits={audits}
       />
-      <ReportLinks audits={audits} settings={settings} />
+      <ReportLinks audits={audits} settings={settings} onError={setError} />
       <Settings
         settings={settings}
         onChange={(nextSettings) => {

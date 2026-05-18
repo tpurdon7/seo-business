@@ -6,9 +6,10 @@ import type { AppSettings, AuditJobItem } from "../lib/types";
 interface ReportLinksProps {
   audits: AuditJobItem[];
   settings: AppSettings;
+  onError: (message: string) => void;
 }
 
-export function ReportLinks({ audits, settings }: ReportLinksProps) {
+export function ReportLinks({ audits, settings, onError }: ReportLinksProps) {
   const completed = audits.filter((audit) => audit.status === "complete" && audit.reportUrl);
 
   if (completed.length === 0) {
@@ -30,8 +31,13 @@ export function ReportLinks({ audits, settings }: ReportLinksProps) {
               className="report-link"
               key={audit.url}
               type="button"
-              onClick={() => {
-                void openUrl(href);
+              onClick={async () => {
+                try {
+                  await openUrl(href);
+                } catch {
+                  window.open(href, "_blank", "noopener,noreferrer");
+                  onError(`If the report did not open, copy this URL into your browser: ${href}`);
+                }
               }}
             >
               <span>{audit.url}</span>
