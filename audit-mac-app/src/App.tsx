@@ -150,7 +150,7 @@ export function App() {
 
       <DropZone onUrls={addUrls} />
 
-      <div className="quick-actions">
+      <div className={pendingUrls.length > 0 ? "quick-actions quick-actions-has-run" : "quick-actions"}>
         <label className="action-button">
           Upload list
           <input
@@ -168,6 +168,11 @@ export function App() {
         <button className="action-button action-button-secondary" type="button" onClick={() => setShowUrlInput((current) => !current)}>
           {showUrlInput ? "Hide URL box" : "Add URL"}
         </button>
+        {pendingUrls.length > 0 ? (
+          <button className="action-button action-button-run" type="button" onClick={runAudit} disabled={running}>
+            {running ? "Running" : `Run ${pendingUrls.length}`}
+          </button>
+        ) : null}
       </div>
 
       {showUrlInput || draft ? (
