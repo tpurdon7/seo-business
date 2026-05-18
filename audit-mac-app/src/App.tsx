@@ -35,7 +35,7 @@ export function App() {
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
 
-  const pendingUrls = useMemo(() => Array.from(new Set([...urls, ...parseUrls(draft)])), [draft, urls]);
+  const pendingUrls = useMemo(() => Array.from(new Set(urls)), [urls]);
   const completed = audits.filter((audit) => audit.status === "complete").length;
   const failed = audits.filter((audit) => audit.status === "failed").length;
 
@@ -44,6 +44,8 @@ export function App() {
   }, [settings]);
 
   function resetJobState() {
+    setDraft("");
+    setUrls([]);
     setJobId(null);
     setJobStatus(null);
     setAudits([]);
@@ -74,6 +76,20 @@ export function App() {
 
   function addUrls(nextUrls: string[]) {
     setUrls((current) => Array.from(new Set([...current, ...nextUrls])));
+  }
+
+  function addDraftUrls() {
+    const nextUrls = parseUrls(draft);
+
+    if (nextUrls.length === 0) {
+      setError("Paste a valid URL first.");
+      return;
+    }
+
+    addUrls(nextUrls);
+    setDraft("");
+    setShowUrlInput(true);
+    setError("");
   }
 
   async function runAudit() {
@@ -145,6 +161,7 @@ export function App() {
               const files = event.currentTarget.files;
               if (!files) return;
               addUrls(await parseUrlFiles(files));
+              event.currentTarget.value = "";
             }}
           />
         </label>
@@ -153,10 +170,29 @@ export function App() {
         </button>
       </div>
 
-      {showUrlInput || draft ? <UrlInput value={draft} onChange={setDraft} onUrls={addUrls} /> : null}
+      {showUrlInput || draft ? (
+        <UrlInput
+          value={draft}
+          onChange={setDraft}
+          onAdd={addDraftUrls}
+          onUrls={(nextUrls) => {
+            addUrls(nextUrls);
+            setDraft("");
+            setError("");
+          }}
+        />
+      ) : null}
 
       {pendingUrls.length > 0 ? <div className="url-count">
-        <span>{pendingUrls.length} URL{pendingUrls.length === 1 ? "" : "s"} ready</span>
+        <div>
+          <span>{pendingUrls.length} URL{pendingUrls.length === 1 ? "" : "s"} ready</span>
+          <div className="pending-preview">
+            {pendingUrls.slice(0, 3).map((url) => (
+              <small key={url}>{url}</small>
+            ))}
+            {pendingUrls.length > 3 ? <small>+{pendingUrls.length - 3} more</small> : null}
+          </div>
+        </div>
         <button className="primary-button" type="button" onClick={runAudit} disabled={running}>
           {running ? "Running" : "Run audit"}
         </button>
