@@ -208,6 +208,9 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
   const hasBuyerIntent = hasBuyerIntentLanguage(data);
   const hasQuestionStructure = hasQuestionHeading(data);
   const descriptiveH2s = descriptiveHeadingCount(data);
+  const speedScore = data.speed.status === "found" && typeof data.speed.score === "number" ? data.speed.score : null;
+  const speedPenalty =
+    speedScore === null ? 1 : speedScore < 30 ? 3 : speedScore < 50 ? 2 : speedScore < 70 ? 1 : 0;
 
   const seo: AuditScore = {
     category: "SEO",
@@ -288,15 +291,18 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
           ),
       item(
         "Image, canonical, indexability basics",
-        !data.noindex && hasCanonical && data.mobileViewport === "found" && altCoverage === 1
-          ? 5
-          : !data.noindex && data.canonicalUrl && data.mobileViewport === "found" && altCoverage >= 0.8
-            ? 3
-            : !data.noindex && (data.canonicalUrl || data.mobileViewport === "found")
-              ? 1
-              : 0,
+        Math.max(
+          0,
+          (!data.noindex && hasCanonical && data.mobileViewport === "found" && altCoverage === 1
+            ? 5
+            : !data.noindex && data.canonicalUrl && data.mobileViewport === "found" && altCoverage >= 0.8
+              ? 3
+              : !data.noindex && (data.canonicalUrl || data.mobileViewport === "found")
+                ? 1
+                : 0) - speedPenalty,
+        ),
         5,
-        `Canonical: ${shortEvidence(data.canonicalUrl)}. Canonical consistency: ${data.canonicalConsistency}. Mobile viewport: ${data.mobileViewport}. Missing image alt text: ${data.imagesMissingAlt.length}/${data.imageCount}. Noindex: ${data.noindex ? "yes" : "no"}.`,
+        `Canonical: ${shortEvidence(data.canonicalUrl)}. Canonical consistency: ${data.canonicalConsistency}. Mobile viewport: ${data.mobileViewport}. Missing image alt text: ${data.imagesMissingAlt.length}/${data.imageCount}. Noindex: ${data.noindex ? "yes" : "no"}. Mobile speed: ${speedScore === null ? "not checked" : `${speedScore}/100`}.`,
       ),
     ],
   };

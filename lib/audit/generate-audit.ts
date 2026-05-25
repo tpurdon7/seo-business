@@ -346,6 +346,10 @@ export function generateAuditReport(id: string, data: AuditExtractedData, scores
       robotsMeta: shortEvidence(data.robotsMeta),
       viewport: data.viewport ? "Found" : "Not found",
       htmlLang: shortEvidence(data.htmlLang),
+      speed:
+        data.speed.status === "found" && typeof data.speed.score === "number"
+          ? `Mobile ${data.speed.score}/100${data.speed.metrics?.largestContentfulPaint ? `, LCP ${data.speed.metrics.largestContentfulPaint}` : ""}`
+          : `Not checked${data.speed.error ? `: ${data.speed.error}` : ""}`,
       schema: data.jsonLd.length > 0 ? `Found ${data.jsonLd.length}` : "Not found",
       sitemap: statusLabel(data.sitemapXml.status),
       robots: statusLabel(data.robotsTxt.status),
@@ -362,8 +366,10 @@ export function generateAuditReport(id: string, data: AuditExtractedData, scores
       "Week 4: Add authority assets such as case studies, reviews, directory profiles, and internal links from relevant pages.",
     ],
     placeholders: [
-      "Speed scoring is not checked yet. Add Lighthouse or PageSpeed Insights in the next pass.",
-      "Directory presence, Google Business Profile checks, backlinks, Reddit/forum mentions, and competitor comparisons are placeholders for later prospecting modules.",
+      data.speed.status === "found"
+        ? "Speed scoring uses mobile PageSpeed Insights performance data when Google returns a result. Treat it as a directional lab score, not a full Core Web Vitals history."
+        : "Speed scoring was not checked because PageSpeed Insights did not return a usable result.",
+      "Directory presence, Google Business Profile checks, backlinks, Reddit/forum mentions, and competitor comparisons still require external data providers before this audit can score them honestly.",
     ],
   };
 }

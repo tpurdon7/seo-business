@@ -214,6 +214,7 @@ export default async function AuditReportPage({ params }: { params: Promise<{ id
                   "Robots meta": report.evidenceSummary.robotsMeta,
                   Viewport: report.evidenceSummary.viewport,
                   "HTML lang": report.evidenceSummary.htmlLang,
+                  Speed: report.evidenceSummary.speed,
                   Schema: report.evidenceSummary.schema,
                   Sitemap: report.evidenceSummary.sitemap,
                   Robots: report.evidenceSummary.robots,

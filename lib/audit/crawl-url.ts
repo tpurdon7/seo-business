@@ -1,4 +1,5 @@
 import { extractPageData } from "@/lib/audit/extract-page-data";
+import { checkPageSpeed } from "@/lib/audit/check-page-speed";
 import type { AuditExtractedData, AvailabilityCheck } from "@/lib/audit/types";
 import { normalizeUrl } from "@/lib/audit/utils";
 
@@ -52,9 +53,10 @@ async function crawlWithPuppeteer(url: string, robotsUrl: string, sitemapUrl: st
 
     const extracted = await extractPageData(page);
     const finalUrl = page.url();
-    const [robotsTxt, sitemapXml] = await Promise.all([
+    const [robotsTxt, sitemapXml, speed] = await Promise.all([
       checkAvailability(robotsUrl),
       checkAvailability(sitemapUrl),
+      checkPageSpeed(finalUrl),
     ]);
 
     return {
@@ -68,10 +70,7 @@ async function crawlWithPuppeteer(url: string, robotsUrl: string, sitemapUrl: st
       sitemapXml,
       canonicalConsistency: canonicalConsistency(finalUrl, extracted.canonicalUrl),
       mobileViewport: extracted.viewport ? "found" : "not_found",
-      speed: {
-        status: "not_checked",
-        error: "PageSpeed and Lighthouse are reserved for the next integration.",
-      },
+      speed,
     };
   } finally {
     await browser.close().catch(() => undefined);
@@ -99,9 +98,10 @@ async function crawlWithPlaywright(url: string, robotsUrl: string, sitemapUrl: s
 
     const extracted = await extractPageData(page);
     const finalUrl = page.url();
-    const [robotsTxt, sitemapXml] = await Promise.all([
+    const [robotsTxt, sitemapXml, speed] = await Promise.all([
       checkAvailability(robotsUrl),
       checkAvailability(sitemapUrl),
+      checkPageSpeed(finalUrl),
     ]);
 
     return {
@@ -115,10 +115,7 @@ async function crawlWithPlaywright(url: string, robotsUrl: string, sitemapUrl: s
       sitemapXml,
       canonicalConsistency: canonicalConsistency(finalUrl, extracted.canonicalUrl),
       mobileViewport: extracted.viewport ? "found" : "not_found",
-      speed: {
-        status: "not_checked",
-        error: "PageSpeed and Lighthouse are reserved for the next integration.",
-      },
+      speed,
     };
   } finally {
     await context.close().catch(() => undefined);

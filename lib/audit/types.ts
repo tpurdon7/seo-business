@@ -31,6 +31,15 @@ export interface AvailabilityCheck {
   url?: string;
   statusCode?: number;
   error?: string;
+  score?: number;
+  strategy?: "mobile" | "desktop";
+  metrics?: {
+    largestContentfulPaint?: string;
+    cumulativeLayoutShift?: string;
+    totalBlockingTime?: string;
+    speedIndex?: string;
+  };
+  opportunities?: string[];
 }
 
 export interface AuditExtractedData {
@@ -142,6 +151,7 @@ export interface AuditReport {
     robotsMeta: string;
     viewport: string;
     htmlLang: string;
+    speed: string;
     schema: string;
     sitemap: string;
     robots: string;
