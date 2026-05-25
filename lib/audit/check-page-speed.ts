@@ -27,6 +27,10 @@ export async function checkPageSpeed(url: string): Promise<AvailabilityCheck> {
   endpoint.searchParams.set("strategy", "mobile");
   endpoint.searchParams.set("category", "performance");
 
+  if (process.env.PAGESPEED_API_KEY) {
+    endpoint.searchParams.set("key", process.env.PAGESPEED_API_KEY);
+  }
+
   try {
     const response = await fetch(endpoint, {
       signal: AbortSignal.timeout(28_000),
