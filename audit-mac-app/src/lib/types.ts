@@ -16,7 +16,7 @@ export interface AuditJobItem {
 
 export interface CreateBatchResponse {
   jobId: string;
-  status: "queued";
+  status: JobStatus;
   audits: AuditJobItem[];
 }
 

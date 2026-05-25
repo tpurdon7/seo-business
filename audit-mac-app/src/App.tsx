@@ -107,6 +107,7 @@ export function App() {
       setJobId(job.jobId);
       setJobStatus(job.status);
       setAudits(job.audits);
+      setRunning(job.status === "queued" || job.status === "running");
       setDraft("");
       setUrls([]);
     } catch (caught) {
