@@ -135,6 +135,12 @@ export function GuidePage({ page }: { page: GuidePageContent }) {
                 </Link>
                 <Link
                   className="block font-medium text-slate-700 hover:text-slate-950"
+                  href="/seo-for-high-trust-service-businesses"
+                >
+                  Read the high-trust SEO guide
+                </Link>
+                <Link
+                  className="block font-medium text-slate-700 hover:text-slate-950"
                   href="/#pricing"
                 >
                   See pricing

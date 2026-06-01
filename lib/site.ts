@@ -453,6 +453,199 @@ export const guidePages: Record<GuidePage["slug"], GuidePage> = {
   },
 };
 
+export type CornerstonePage = {
+  slug: "seo-for-high-trust-service-businesses";
+  path: string;
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  eyebrow: string;
+  intro: string[];
+  audiences: string[];
+  keyPoints: Array<{
+    title: string;
+    description: string;
+  }>;
+  sections: Array<{
+    title: string;
+    paragraphs: string[];
+    bullets?: string[];
+  }>;
+  faqs: FaqItem[];
+  relatedLinks: Array<{
+    href: string;
+    label: string;
+    description: string;
+  }>;
+};
+
+export const cornerstonePages: Record<CornerstonePage["slug"], CornerstonePage> = {
+  "seo-for-high-trust-service-businesses": {
+    slug: "seo-for-high-trust-service-businesses",
+    path: "/seo-for-high-trust-service-businesses",
+    metaTitle:
+      "SEO for High-Trust Service Businesses | Better Search",
+    metaDescription:
+      "A practical guide to SEO for high-trust UK service businesses such as clinics, consultants, dentists, therapists, accountants, and legal firms.",
+    h1: "SEO for high-trust service businesses",
+    eyebrow: "Cornerstone guide",
+    intro: [
+      "SEO works differently when a customer needs confidence before they enquire. Clinics, consultants, dentists, therapists, accountants, legal firms, and similar businesses are rarely chosen on visibility alone.",
+      "People compare carefully. They read service pages, look for qualifications, check reviews, ask practical questions, and often use AI tools to narrow down who looks credible.",
+      "That means the job is not just ranking a page. The job is making the business easy to understand, easy to trust, and easy to choose when the right person is already searching.",
+    ],
+    audiences: [
+      "Private clinics",
+      "Dentists",
+      "Therapists",
+      "Consultants",
+      "Accountants",
+      "Legal firms",
+      "Financial advisers",
+      "Specialist local services",
+    ],
+    keyPoints: [
+      {
+        title: "Commercial pages first",
+        description:
+          "Home, service, location, and trust pages usually deserve attention before wider content expansion.",
+      },
+      {
+        title: "Trust close to the decision",
+        description:
+          "Reviews, qualifications, process detail, FAQs, and policies should sit near the pages that drive enquiries.",
+      },
+      {
+        title: "Google and AI both matter",
+        description:
+          "The same clarity that supports rankings also helps AI tools summarise and compare the business accurately.",
+      },
+    ],
+    sections: [
+      {
+        title: "What makes high-trust SEO different",
+        paragraphs: [
+          "High-trust searches usually sit closer to a decision with more perceived risk. Someone looking for a therapist, clinic, consultant, accountant, or legal provider often wants reassurance before they want a call.",
+          "That changes the brief. The site needs stronger service explanation, cleaner buying signals, clearer next steps, and better trust support than a lower-stakes service might need.",
+        ],
+        bullets: [
+          "Customers compare several providers before making contact",
+          "The strongest page is often the clearest page, not the busiest one",
+          "Thin content and vague claims usually damage trust more than they help reach",
+        ],
+      },
+      {
+        title: "The pages that usually matter most",
+        paragraphs: [
+          "Most high-trust businesses do not need a sprawling content plan on day one. They need the pages tied closest to enquiries to become much clearer.",
+          "That normally means the homepage, core service pages, location pages where local intent exists, an about page, a methodology or process page, and a small number of useful guides that answer pre-enquiry questions.",
+        ],
+      },
+      {
+        title: "Service pages should reduce uncertainty",
+        paragraphs: [
+          "A strong service page should explain what the service is, who it is for, what problem it solves, how the process works, and what happens next. In high-trust markets, vague copy is expensive because it creates hesitation.",
+          "Good titles, useful headings, concise definitions, FAQs, and visible trust detail make those pages easier for both buyers and search engines to interpret.",
+        ],
+      },
+      {
+        title: "Trust signals should support the choice, not decorate the page",
+        paragraphs: [
+          "Trust signals are only useful when they help someone judge whether your business looks credible. That can include qualifications, professional memberships, reviews, process notes, locations served, pricing context, or simple clarity about how to get started.",
+          "Unsupported claims, fake proof, and recycled jargon are a bad fit for this kind of SEO because they undermine the very signal the page needs to send.",
+        ],
+      },
+      {
+        title: "Location pages only help when the local intent is real",
+        paragraphs: [
+          "Many high-trust service businesses need both a UK-wide positioning page and selected local pages for areas they genuinely serve. The local page should add context, not just swap in place names.",
+          "If your business competes in places like Surrey or Cornwall, local pages can support nearby searches while the main cornerstone page explains the broader offer and search strategy.",
+        ],
+      },
+      {
+        title: "AI search visibility now sits inside the same brief",
+        paragraphs: [
+          "Buyers increasingly ask AI tools who to compare, what to look for, or which providers seem suitable. That means high-trust SEO now overlaps with GEO and AEO.",
+          "Pages that define the service clearly, answer practical questions directly, and keep business information consistent are easier for AI systems to extract and describe without distortion.",
+        ],
+        bullets: [
+          "Use clear section headings that match real buyer questions",
+          "Keep important answers short enough to quote or summarise cleanly",
+          "Match schema, page topic, and on-page copy so the page says one consistent thing",
+        ],
+      },
+      {
+        title: "Common mistakes on high-trust websites",
+        paragraphs: [
+          "The most common issue is not a missing SEO trick. It is usually a site that looks polished but leaves too much unsaid about services, fit, proof, or next steps.",
+        ],
+        bullets: [
+          "Generic homepage copy with weak service detail",
+          "No supporting trust pages explaining approach or process",
+          "Local pages that are too thin to deserve ranking",
+          "FAQs buried away from the commercial pages they should support",
+          "Canonical, sitemap, or internal-link gaps that make good pages harder to discover",
+        ],
+      },
+      {
+        title: "A sensible order of work",
+        paragraphs: [
+          "For most businesses, the right order is to fix crawlability and metadata basics, strengthen the main commercial pages, add or improve trust pages, build a cornerstone guide, and then expand into local or niche supporting pages where demand exists.",
+          "That keeps the site focused, easier to review, and better aligned with how high-trust buyers actually search.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What counts as a high-trust service business?",
+        answer:
+          "Usually a business where customers compare carefully before enquiring, such as clinics, dentists, therapists, consultants, accountants, legal firms, and similar providers.",
+      },
+      {
+        question: "Is SEO different for clinics and professional firms?",
+        answer:
+          "Yes. The SEO still needs technical basics, but the page quality, trust support, and decision-stage content usually matter more than broad traffic alone.",
+      },
+      {
+        question: "Do high-trust businesses still need local SEO?",
+        answer:
+          "Often, yes. If people search by town, county, or nearby provider terms, local pages and local signals still matter alongside the wider service positioning.",
+      },
+      {
+        question: "How does AI search affect this kind of SEO?",
+        answer:
+          "AI search increases the value of clear answers, consistent business information, and well-structured trust signals because those elements are easier for AI tools to interpret and cite.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See the audit and prioritisation process behind this type of work.",
+      },
+      {
+        href: "/about",
+        label: "About Better Search",
+        description:
+          "See who Better Search is built for and what the work focuses on.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "SEO in Surrey",
+        description:
+          "Local page for high-trust service businesses across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "SEO in Cornwall",
+        description:
+          "Local page for high-trust service businesses across Truro, Newquay, and Falmouth.",
+      },
+    ],
+  },
+};
+
 export type TrustPage = {
   slug: "about" | "methodology";
   path: string;
@@ -590,6 +783,12 @@ export const trustPages: Record<TrustPage["slug"], TrustPage> = {
     ],
     relatedLinks: [
       {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the cornerstone SEO guide",
+        description:
+          "A broader guide to SEO for clinics, consultants, and other high-trust businesses.",
+      },
+      {
         href: "/methodology",
         label: "Read the methodology",
         description:
@@ -720,6 +919,12 @@ export const trustPages: Record<TrustPage["slug"], TrustPage> = {
           "See who Better Search is built for and how it positions the work.",
       },
       {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the cornerstone SEO guide",
+        description:
+          "UK-wide guide covering the pages, trust signals, and structure that matter most.",
+      },
+      {
         href: "/seo-for-service-businesses-in-surrey",
         label: "Read the Surrey guide",
         description:
@@ -739,6 +944,7 @@ export const sitemapPages = [
   homeSeo.path,
   "/about",
   "/methodology",
+  "/seo-for-high-trust-service-businesses",
   "/seo-cornwall",
   "/seo-surrey",
   "/how-to-get-found-on-google-in-cornwall",

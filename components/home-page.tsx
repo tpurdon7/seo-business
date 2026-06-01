@@ -147,6 +147,12 @@ const resourceLinks = [
       "How audits, page priorities, internal links, and answer-ready structure fit together.",
   },
   {
+    href: "/seo-for-high-trust-service-businesses",
+    title: "SEO for high-trust service businesses",
+    description:
+      "Cornerstone guide covering service pages, trust signals, local intent, and AI search visibility.",
+  },
+  {
     href: "/seo-surrey",
     title: "SEO in Surrey",
     description:
@@ -830,7 +836,7 @@ export function HomePage() {
           title="Start with the pages that explain the business best."
           description="A stronger homepage should help visitors and search engines reach the most useful commercial, trust, and local pages quickly."
         />
-        <div className="mx-auto mt-14 grid max-w-7xl gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mx-auto mt-14 grid max-w-7xl gap-4 md:grid-cols-2 xl:grid-cols-5">
           {resourceLinks.map((item, index) => (
             <Reveal delay={index * 0.04} key={item.href}>
               <Link

@@ -1,4 +1,5 @@
 import {
+  cornerstonePages,
   guidePages,
   homeFaqs,
   homeSeo,
@@ -8,6 +9,7 @@ import {
   siteUrl,
   trustPages,
   type FaqItem,
+  type CornerstonePage,
   type GuidePage,
   type LocationPage,
   type TrustPage,
@@ -185,6 +187,23 @@ export function locationJsonLd(slug: LocationPage["slug"]) {
 
 export function guideJsonLd(slug: GuidePage["slug"]) {
   const page = guidePages[slug];
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema(),
+      websiteSchema(),
+      professionalServiceSchema(),
+      serviceSchema(page.path),
+      webPageSchema(page.path, page.metaTitle, page.metaDescription),
+      faqSchema(page.path, page.faqs),
+      breadcrumbSchema({ path: page.path, name: page.h1 }),
+    ],
+  };
+}
+
+export function cornerstonePageJsonLd(slug: CornerstonePage["slug"]) {
+  const page = cornerstonePages[slug];
 
   return {
     "@context": "https://schema.org",

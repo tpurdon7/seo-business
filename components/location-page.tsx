@@ -223,6 +223,13 @@ export function LocationPage({ page }: { page: LocationPageContent }) {
                   </Link>
                   <Link
                     className="flex items-center justify-between text-slate-700 hover:text-slate-950"
+                    href="/seo-for-high-trust-service-businesses"
+                  >
+                    Read the high-trust SEO guide
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                  <Link
+                    className="flex items-center justify-between text-slate-700 hover:text-slate-950"
                     href="/#pricing"
                   >
                     See pricing
