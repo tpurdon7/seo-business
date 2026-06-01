@@ -22,17 +22,17 @@ export function SiteHeader() {
           <Link className="hover:text-slate-950" href="/#services">
             Services
           </Link>
-          <Link className="hover:text-slate-950" href="/#industries">
-            Who it helps
+          <Link className="hover:text-slate-950" href="/about">
+            About
           </Link>
-          <Link className="hover:text-slate-950" href="/#dashboard">
-            Dashboard
+          <Link className="hover:text-slate-950" href="/methodology">
+            Methodology
           </Link>
-          <Link className="hover:text-slate-950" href="/#process">
-            Process
+          <Link className="hover:text-slate-950" href="/seo-surrey">
+            Surrey
           </Link>
-          <Link className="hover:text-slate-950" href="/#pricing">
-            Pricing
+          <Link className="hover:text-slate-950" href="/seo-cornwall">
+            Cornwall
           </Link>
           <Link className="hover:text-slate-950" href="/#faq">
             FAQ

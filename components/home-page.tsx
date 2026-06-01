@@ -10,11 +10,9 @@ import {
   Compass,
   FileSearch,
   Gauge,
-  LineChart,
   Link2,
   Search,
   ShieldCheck,
-  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -25,8 +23,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { bookingLink, homeFaqs } from "@/lib/site";
 import { cn } from "@/lib/utils";
-
-const logos = ["eDentist", "Sentinel HVAC", "Nicegram", "Legal Circle"];
 
 const services: Array<{
   title: string;
@@ -119,11 +115,76 @@ const whyUs = [
   },
 ];
 
-const results = [
-  { value: "+148%", label: "more organic traffic", detail: "from people finding the business through search" },
-  { value: "+72%", label: "more qualified enquiries", detail: "from people ready to compare and contact providers" },
-  { value: "41", label: "important searches on page one", detail: "across local, service, and comparison searches" },
-  { value: "Stronger", label: "visibility in Google and AI search", detail: "with clearer pages, proof, and online trust signals" },
+const auditStandards = [
+  {
+    title: "Evidence-led reviews",
+    description:
+      "We separate checked findings from assumptions so the plan stays defensible.",
+  },
+  {
+    title: "Commercial pages first",
+    description:
+      "Service, location, and trust pages usually matter more than thin content expansion.",
+  },
+  {
+    title: "Built for Google and AI search",
+    description:
+      "Clear headings, useful answers, internal links, and matching schema help both.",
+  },
+];
+
+const resourceLinks = [
+  {
+    href: "/about",
+    title: "About Better Search",
+    description:
+      "Positioning, who the work is for, and the standards behind the site.",
+  },
+  {
+    href: "/methodology",
+    title: "SEO and GEO methodology",
+    description:
+      "How audits, page priorities, internal links, and answer-ready structure fit together.",
+  },
+  {
+    href: "/seo-surrey",
+    title: "SEO in Surrey",
+    description:
+      "Commercial local page for Guildford, Woking, Farnham, and nearby high-trust searches.",
+  },
+  {
+    href: "/seo-cornwall",
+    title: "SEO in Cornwall",
+    description:
+      "Commercial local page for Truro, Newquay, Falmouth, and surrounding service areas.",
+  },
+];
+
+const outcomes = [
+  {
+    value: "Clearer",
+    label: "service and location pages",
+    detail:
+      "People should understand what you do, where you work, and why they should keep reading.",
+  },
+  {
+    value: "Stronger",
+    label: "trust signals",
+    detail:
+      "Qualifications, FAQs, process notes, and honest proof should support the enquiry decision.",
+  },
+  {
+    value: "Better",
+    label: "internal link paths",
+    detail:
+      "Homepage, service, guide, and location pages should reinforce each other instead of sitting apart.",
+  },
+  {
+    value: "More usable",
+    label: "AI-ready answers",
+    detail:
+      "Pages should be easier for AI tools to summarise and easier for buyers to compare.",
+  },
 ];
 
 const pricing = [
@@ -277,86 +338,68 @@ function HeroDashboard() {
         <div className="relative rounded-lg border border-slate-200 bg-slate-950 p-3 text-white">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold">Visibility Dashboard</p>
-              <p className="text-xs text-slate-400">Google + AI search overview</p>
+              <p className="text-sm font-semibold">Audit Snapshot</p>
+              <p className="text-xs text-slate-400">What we review first</p>
             </div>
             <div className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-xs text-slate-200">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              Visibility updated
+              Evidence-first review
             </div>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-lg bg-white p-4 text-slate-950 sm:col-span-2">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm text-slate-500">Google Visibility</p>
-                  <p className="text-3xl font-semibold tabular-nums">84,920</p>
+                  <p className="text-sm text-slate-500">Core visibility priorities</p>
+                  <p className="text-3xl font-semibold">Start with the pages that earn trust</p>
                 </div>
                 <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
-                  +31.4%
+                  4-step process
                 </span>
               </div>
-              <svg
-                className="h-36 w-full overflow-visible"
-                viewBox="0 0 420 160"
-                role="img"
-                aria-label="Google visibility chart trending upward"
-              >
-                <defs>
-                  <linearGradient id="traffic-fill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#fb923c" stopOpacity="0.35" />
-                    <stop offset="100%" stopColor="#fb923c" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M0 136 C58 122 72 90 122 96 C184 104 185 55 244 61 C305 67 305 28 420 22 L420 160 L0 160 Z"
-                  fill="url(#traffic-fill)"
-                />
-                <motion.path
-                  d="M0 136 C58 122 72 90 122 96 C184 104 185 55 244 61 C305 67 305 28 420 22"
-                  fill="none"
-                  stroke="#ea580c"
-                  strokeLinecap="round"
-                  strokeWidth="6"
-                  initial={reduceMotion ? false : { pathLength: 0 }}
-                  animate={reduceMotion ? undefined : { pathLength: 1 }}
-                  transition={{ duration: 1.5, delay: 0.25, ease: "easeOut" }}
-                />
-                {[22, 68, 116, 164, 212, 260, 308, 356, 404].map((x) => (
-                  <line
-                    key={x}
-                    x1={x}
-                    x2={x}
-                    y1="0"
-                    y2="160"
-                    stroke="#e2e8f0"
-                    strokeDasharray="4 10"
-                    strokeWidth="1"
-                  />
+              <div className="grid gap-3">
+                {[
+                  ["1. Crawlability and indexation", "Robots, sitemap, canonicals, and page discovery."],
+                  ["2. Core commercial pages", "Service, location, about, and methodology pages."],
+                  ["3. Trust and answer structure", "FAQs, credentials, process notes, and clear headings."],
+                  ["4. Internal linking and schema", "Support how Google and AI tools connect the site."],
+                ].map(([title, copy], index) => (
+                  <motion.div
+                    className="rounded-lg border border-slate-200 bg-slate-50 p-4"
+                    key={title}
+                    initial={reduceMotion ? false : { opacity: 0, x: 18 }}
+                    animate={reduceMotion ? undefined : { opacity: 1, x: 0 }}
+                    transition={{ delay: 0.12 * index, duration: 0.4, ease: "easeOut" }}
+                  >
+                    <p className="font-semibold text-slate-950">{title}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{copy}</p>
+                  </motion.div>
                 ))}
-              </svg>
+              </div>
             </div>
             <div className="grid gap-3">
-              <MiniStat label="Keyword Growth" value="+246" tone="orange" />
-              <MiniStat label="Website Health" value="89%" tone="green" />
-              <MiniStat label="Lead Opportunities" value="1.8k" tone="blue" />
+              <MiniStat label="Priority order" value="Core pages first" tone="orange" />
+              <MiniStat label="Trust review" value="Real signals only" tone="green" />
+              <MiniStat label="AI readiness" value="Clear answers" tone="blue" />
             </div>
           </div>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <div className="rounded-lg bg-white/10 p-4">
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm text-slate-300">Lead opportunities</p>
-                <LineChart className="h-4 w-4 text-orange-300" aria-hidden="true" />
+                <p className="text-sm text-slate-300">What gets checked</p>
+                <BarChart3 className="h-4 w-4 text-orange-300" aria-hidden="true" />
               </div>
               <div className="space-y-2">
-                {["comparison pages", "service pages", "AI search gaps"].map(
+                {["titles and canonicals", "internal links", "FAQ and schema"].map(
                   (item, index) => (
                     <div
                       className="flex items-center justify-between gap-3 rounded-lg bg-white/5 px-3 py-2 text-xs"
                       key={item}
                     >
                       <span className="text-slate-300">{item}</span>
-                      <span className="font-semibold text-white">+{18 + index * 11}%</span>
+                      <span className="font-semibold text-white">
+                        {["first", "next", "support"][index]}
+                      </span>
                     </div>
                   ),
                 )}
@@ -364,19 +407,26 @@ function HeroDashboard() {
             </div>
             <div className="relative overflow-hidden rounded-lg bg-white/10 p-4">
               <div className="absolute inset-x-0 top-0 h-16 animate-[scan_5s_ease-in-out_infinite] bg-gradient-to-b from-white/20 to-transparent" />
-              <p className="text-sm text-slate-300">AI Search Visibility</p>
-              <div className="mt-4 flex items-end gap-2">
-                {[34, 48, 44, 62, 72, 86].map((height, index) => (
-                  <motion.span
-                    key={height}
-                    className="w-full rounded-t-sm bg-orange-300"
-                    initial={reduceMotion ? false : { height: 12 }}
-                    animate={reduceMotion ? undefined : { height }}
-                    transition={{ duration: 0.7, delay: 0.1 * index, ease: "easeOut" }}
-                  />
+              <p className="text-sm text-slate-300">Answer-ready structure</p>
+              <div className="mt-4 space-y-3">
+                {[
+                  "Direct definitions",
+                  "Useful FAQs",
+                  "Descriptive headings",
+                  "Matching schema",
+                ].map((item, index) => (
+                  <motion.div
+                    className="rounded-lg bg-white/5 px-3 py-2 text-sm text-slate-200"
+                    key={item}
+                    initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+                    animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index, duration: 0.35 }}
+                  >
+                    {item}
+                  </motion.div>
                 ))}
               </div>
-              <p className="mt-4 text-2xl font-semibold tabular-nums">64%</p>
+              <p className="mt-4 text-2xl font-semibold">Built for Google and AI search</p>
             </div>
           </div>
         </div>
@@ -413,17 +463,27 @@ function MiniStat({
 
 function AnalyticsDashboard() {
   const reduceMotion = useReducedMotion();
-  const health = [
-    ["Clear service pages", 92],
-    ["Local trust signals", 76],
-    ["Reviews and proof", 68],
-    ["Speed and usability", 84],
-  ];
-  const keywords = [
-    ["private clinic near me", "4", "+9"],
-    ["best dental practice", "7", "+13"],
-    ["aesthetics clinic reviews", "11", "+28"],
-    ["local accountant advice", "6", "+5"],
+  const priorities = [
+    {
+      title: "Crawlability and indexation",
+      detail: "Confirm important pages are indexable, canonicalised, and discoverable.",
+      status: "Check first",
+    },
+    {
+      title: "Service and location pages",
+      detail: "Tighten the pages that explain the service and route users to an enquiry.",
+      status: "Strengthen",
+    },
+    {
+      title: "Trust and answer structure",
+      detail: "Use FAQs, process notes, credentials, and clear headings where they help buyers.",
+      status: "Support",
+    },
+    {
+      title: "Schema and internal links",
+      detail: "Make the page relationships and entity signals easier to interpret.",
+      status: "Expand",
+    },
   ];
 
   return (
@@ -436,25 +496,25 @@ function AnalyticsDashboard() {
             </span>
             <div>
               <p className="font-semibold">Visibility Dashboard</p>
-              <p className="text-sm text-slate-400">Google, AI search, and enquiry opportunities</p>
+              <p className="text-sm text-slate-400">How Better Search prioritises the work</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs text-slate-300">
-            <span className="rounded-full bg-white/10 px-3 py-2">Google rankings</span>
-            <span className="rounded-full bg-orange-500 px-3 py-2 text-white">AI search mentions</span>
-            <span className="rounded-full bg-white/10 px-3 py-2">Lead opportunities</span>
+            <span className="rounded-full bg-white/10 px-3 py-2">Crawlability</span>
+            <span className="rounded-full bg-orange-500 px-3 py-2 text-white">Trust signals</span>
+            <span className="rounded-full bg-white/10 px-3 py-2">AI readiness</span>
           </div>
         </div>
         <div className="grid bg-slate-100 lg:grid-cols-[240px_1fr]">
           <aside className="hidden border-r border-slate-200 bg-white p-5 lg:block">
             <p className="mb-4 text-xs font-semibold uppercase text-slate-400">Workspace</p>
             {[
-              "Google rankings",
-              "AI search mentions",
-              "Website health",
-              "Content gaps",
-              "Lead opportunities",
-              "Competitor visibility",
+              "Crawlability",
+              "Core pages",
+              "Internal links",
+              "Trust signals",
+              "Schema fit",
+              "Supporting guides",
             ].map(
               (item, index) => (
                 <div
@@ -477,83 +537,57 @@ function AnalyticsDashboard() {
               <div className="rounded-lg bg-white p-5 shadow-sm">
                 <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Potential enquiry value</p>
-                    <p className="mt-1 text-3xl font-semibold text-slate-950 tabular-nums">
-                      £428k
+                    <p className="text-sm font-medium text-slate-500">Where work usually starts</p>
+                    <p className="mt-1 text-3xl font-semibold text-slate-950">
+                      Fix the pages buyers actually use
                     </p>
                   </div>
                   <span className="rounded-full bg-emerald-100 px-3 py-1.5 text-sm font-semibold text-emerald-700">
-                    +18.6% projected
+                    Evidence-led
                   </span>
                 </div>
-                <svg
-                  className="h-64 w-full overflow-visible"
-                  viewBox="0 0 720 260"
-                  role="img"
-                  aria-label="Potential enquiry value chart"
-                >
-                  <defs>
-                    <linearGradient id="enquiry-fill" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0%" stopColor="#14b8a6" stopOpacity="0.25" />
-                      <stop offset="100%" stopColor="#14b8a6" stopOpacity="0" />
-                    </linearGradient>
-                    <linearGradient id="orange-line" x1="0" x2="1" y1="0" y2="0">
-                      <stop offset="0%" stopColor="#f97316" />
-                      <stop offset="100%" stopColor="#14b8a6" />
-                    </linearGradient>
-                  </defs>
-                  {[40, 90, 140, 190, 240].map((y) => (
-                    <line
-                      key={y}
-                      x1="0"
-                      x2="720"
-                      y1={y}
-                      y2={y}
-                      stroke="#e2e8f0"
-                      strokeDasharray="7 12"
-                    />
+                <div className="grid gap-3">
+                  {[
+                    [
+                      "Service pages",
+                      "Clarify what you offer, who it is for, and what someone should do next.",
+                    ],
+                    [
+                      "Location pages",
+                      "Show where you work without stretching beyond the areas you genuinely serve.",
+                    ],
+                    [
+                      "Trust pages",
+                      "About, methodology, and proof structure help buyers and AI tools interpret the business.",
+                    ],
+                    [
+                      "Supporting guides",
+                      "Useful explainer pages help internal links and answer common comparison questions.",
+                    ],
+                  ].map(([title, copy], index) => (
+                    <motion.div
+                      className="rounded-lg border border-slate-200 bg-slate-50 p-4"
+                      key={title}
+                      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ delay: index * 0.08, duration: 0.45 }}
+                    >
+                      <p className="font-semibold text-slate-950">{title}</p>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{copy}</p>
+                    </motion.div>
                   ))}
-                  <path
-                    d="M0 222 C80 214 100 172 178 178 C258 184 270 118 350 124 C432 130 448 74 532 80 C612 85 628 42 720 30 L720 260 L0 260 Z"
-                    fill="url(#enquiry-fill)"
-                  />
-                  <motion.path
-                    d="M0 222 C80 214 100 172 178 178 C258 184 270 118 350 124 C432 130 448 74 532 80 C612 85 628 42 720 30"
-                    fill="none"
-                    stroke="url(#orange-line)"
-                    strokeLinecap="round"
-                    strokeWidth="7"
-                    initial={reduceMotion ? false : { pathLength: 0 }}
-                    whileInView={reduceMotion ? undefined : { pathLength: 1 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 1.3, ease: "easeOut" }}
-                  />
-                  {[178, 350, 532, 720].map((x, index) => (
-                    <motion.circle
-                      key={x}
-                      cx={x}
-                      cy={[178, 124, 80, 30][index]}
-                      r="7"
-                      fill="#fff"
-                      stroke="#f97316"
-                      strokeWidth="4"
-                      initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
-                      whileInView={reduceMotion ? undefined : { scale: 1, opacity: 1 }}
-                      viewport={{ once: true, amount: 0.4 }}
-                      transition={{ delay: 0.5 + index * 0.12, duration: 0.35 }}
-                    />
-                  ))}
-                </svg>
+                </div>
               </div>
               <div className="grid gap-4 md:grid-cols-3">
                 {[
-                  ["Content gaps", "28 pages", "linked to enquiries"],
-                  ["Website fixes", "43 issues", "ready to improve"],
-                  ["Websites that could mention you", "67 domains", "relevant places online"],
+                  ["Homepage links", "Tighten", "Guide users to the next useful page"],
+                  ["FAQ structure", "Add", "Support direct answers and buyer questions"],
+                  ["Schema fit", "Match", "Use page-level schema that reflects the topic"],
                 ].map(([label, value, detail], index) => (
                   <motion.div
-                  className="rounded-lg bg-white p-5 shadow-sm"
-                  key={label}
+                    className="rounded-lg bg-white p-5 shadow-sm"
+                    key={label}
                     initial={reduceMotion ? false : { opacity: 1, y: 14 }}
                     whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
@@ -572,43 +606,48 @@ function AnalyticsDashboard() {
               <div className="rounded-lg bg-white p-5 shadow-sm">
                 <div className="mb-5 flex items-center justify-between gap-3">
                   <div>
-                    <p className="font-semibold text-slate-950">Website health</p>
-                    <p className="text-sm text-slate-500">What needs attention first</p>
+                    <p className="font-semibold text-slate-950">Audit checks</p>
+                    <p className="text-sm text-slate-500">Priority order, not fake scoring</p>
                   </div>
                   <ShieldCheck className="h-5 w-5 text-emerald-600" aria-hidden="true" />
                 </div>
                 <div className="space-y-4">
-                  {health.map(([label, value]) => (
-                    <div key={label}>
-                      <div className="mb-2 flex justify-between text-sm">
-                        <span className="text-slate-600">{label}</span>
-                        <span className="font-semibold text-slate-950 tabular-nums">{value}%</span>
+                  {priorities.map((item, index) => (
+                    <motion.div
+                      className="rounded-lg border border-slate-200 bg-slate-50 p-4"
+                      key={item.title}
+                      initial={reduceMotion ? false : { opacity: 0, x: 14 }}
+                      whileInView={reduceMotion ? undefined : { opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.5 }}
+                      transition={{ delay: index * 0.08, duration: 0.35 }}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="font-semibold text-slate-950">{item.title}</p>
+                        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700">
+                          {item.status}
+                        </span>
                       </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
-                        <motion.div
-                          className="h-full rounded-full bg-gradient-to-r from-orange-500 to-teal-500"
-                          initial={reduceMotion ? false : { width: "0%" }}
-                          whileInView={reduceMotion ? undefined : { width: `${value}%` }}
-                          viewport={{ once: true, amount: 0.5 }}
-                          transition={{ duration: 0.8, ease: "easeOut" }}
-                        />
-                      </div>
-                    </div>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{item.detail}</p>
+                    </motion.div>
                   ))}
                 </div>
               </div>
               <div className="rounded-lg bg-slate-950 p-5 text-white shadow-sm">
-                <p className="font-semibold">Google rankings</p>
+                <p className="font-semibold">What strong pages do</p>
                 <div className="mt-4 space-y-2">
-                  {keywords.map(([keyword, position, lift]) => (
+                  {[
+                    "Define the service clearly",
+                    "Cover the right towns or service areas",
+                    "Answer the questions people ask before they enquire",
+                    "Give real reasons to trust the business",
+                  ].map((item) => (
                     <div
                       className="grid grid-cols-[1fr_44px_54px] items-center gap-3 rounded-lg bg-white/[0.08] px-3 py-3 text-sm"
-                      key={keyword}
+                      key={item}
                     >
-                      <span className="min-w-0 truncate text-slate-300">{keyword}</span>
-                      <span className="font-semibold text-white tabular-nums">#{position}</span>
+                      <span className="col-span-2 min-w-0 text-slate-300">{item}</span>
                       <span className="rounded-full bg-emerald-400/15 px-2 py-1 text-center text-xs font-semibold text-emerald-300">
-                        {lift}
+                        useful
                       </span>
                     </div>
                   ))}
@@ -616,10 +655,10 @@ function AnalyticsDashboard() {
               </div>
               <div className="rounded-lg bg-orange-600 p-5 text-white shadow-sm">
                 <p className="text-sm font-medium text-orange-100">Next best action</p>
-                <p className="mt-2 text-2xl font-semibold">Improve 9 service pages</p>
+                <p className="mt-2 text-2xl font-semibold">Strengthen 1 to 3 core pages first</p>
                 <p className="mt-3 text-sm leading-6 text-orange-50">
-                  Competitors are being found for useful local searches. Clearer service pages
-                  could help more of the right people find and trust you.
+                  It is usually better to improve a small set of important pages well than publish
+                  a long list of thin pages that add little trust.
                 </p>
               </div>
             </div>
@@ -665,13 +704,23 @@ export function HomePage() {
             </div>
             <div className="mt-10 grid max-w-xl gap-3 sm:grid-cols-3">
               <MiniMetric
-                icon={TrendingUp}
-                label="Google Visibility"
-                value="+148%"
-                change="+31%"
+                icon={Compass}
+                label="Priority order"
+                value="4-step"
+                change="Evidence-first"
               />
-              <MiniMetric icon={BrainCircuit} label="AI Search Visibility" value="+36%" change="+14" />
-              <MiniMetric icon={Gauge} label="Website Health" value="89%" change="+22" />
+              <MiniMetric
+                icon={BrainCircuit}
+                label="AI readiness"
+                value="Clear answers"
+                change="Answer-ready"
+              />
+              <MiniMetric
+                icon={Gauge}
+                label="Main focus"
+                value="Core pages"
+                change="Enquiry-led"
+              />
             </div>
           </Reveal>
           <HeroDashboard />
@@ -679,17 +728,18 @@ export function HomePage() {
       </section>
 
       <section className="border-y border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 lg:px-8">
-          <p className="text-center text-sm font-semibold uppercase text-slate-500">
-            Trusted by service businesses where reputation matters
-          </p>
-          <div className="grid grid-cols-2 gap-3 text-center sm:grid-cols-3 lg:grid-cols-5">
-            {logos.map((logo) => (
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="grid gap-4 lg:grid-cols-3">
+            {auditStandards.map((item) => (
               <div
-                className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold text-slate-600"
-                key={logo}
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-6"
+                key={item.title}
               >
-                {logo}
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-700">
+                  Trust base
+                </p>
+                <h2 className="mt-3 text-xl font-semibold text-slate-950">{item.title}</h2>
+                <p className="mt-3 leading-7 text-slate-600">{item.description}</p>
               </div>
             ))}
           </div>
@@ -772,6 +822,33 @@ export function HomePage() {
             </div>
           </div>
         </Reveal>
+      </section>
+
+      <section className="bg-white px-4 py-24 sm:px-6 lg:px-8">
+        <SectionIntro
+          eyebrow="Internal links"
+          title="Start with the pages that explain the business best."
+          description="A stronger homepage should help visitors and search engines reach the most useful commercial, trust, and local pages quickly."
+        />
+        <div className="mx-auto mt-14 grid max-w-7xl gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {resourceLinks.map((item, index) => (
+            <Reveal delay={index * 0.04} key={item.href}>
+              <Link
+                className="group block h-full rounded-lg border border-slate-200 bg-slate-50 p-6 transition duration-200 hover:-translate-y-1 hover:border-orange-200 hover:bg-white hover:shadow-[0_24px_70px_rgba(15,23,42,0.08)]"
+                href={item.href}
+              >
+                <p className="text-lg font-semibold text-slate-950 group-hover:text-orange-700">
+                  {item.title}
+                </p>
+                <p className="mt-3 leading-7 text-slate-600">{item.description}</p>
+                <span className="mt-6 inline-flex items-center gap-2 font-semibold text-orange-700">
+                  View page
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       <section className="relative overflow-hidden bg-slate-950 px-4 py-24 text-white sm:px-6 lg:px-8">
@@ -868,12 +945,12 @@ export function HomePage() {
 
       <section className="px-4 py-24 sm:px-6 lg:px-8">
         <SectionIntro
-          eyebrow="Results"
-          title="Measured by visibility, trust, and real enquiries."
-          description="We focus on the signs that matter: more people finding you, clearer reasons to trust you, and more of the right enquiries from Google and AI search."
+          eyebrow="What improves"
+          title="What good SEO work should make easier."
+          description="The right package should improve clarity, trust, and discovery without inventing proof or overpromising results."
         />
         <div className="mx-auto mt-14 grid max-w-7xl gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {results.map((result, index) => (
+          {outcomes.map((result, index) => (
             <Reveal delay={index * 0.05} key={result.label}>
               <Card className="h-full p-6">
                 <p className="text-4xl font-semibold text-orange-600 tabular-nums">{result.value}</p>

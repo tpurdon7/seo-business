@@ -453,8 +453,292 @@ export const guidePages: Record<GuidePage["slug"], GuidePage> = {
   },
 };
 
+export type TrustPage = {
+  slug: "about" | "methodology";
+  path: string;
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  eyebrow: string;
+  intro: string[];
+  principles: Array<{
+    title: string;
+    description: string;
+  }>;
+  sections: Array<{
+    title: string;
+    paragraphs: string[];
+    bullets?: string[];
+  }>;
+  faqs: FaqItem[];
+  relatedLinks: Array<{
+    href: string;
+    label: string;
+    description: string;
+  }>;
+};
+
+export const trustPages: Record<TrustPage["slug"], TrustPage> = {
+  about: {
+    slug: "about",
+    path: "/about",
+    metaTitle:
+      "About Better Search | SEO & GEO for High-Trust UK Service Businesses",
+    metaDescription:
+      "Learn how Better Search helps high-trust UK service businesses improve Google visibility, AI search clarity, and website trust signals.",
+    h1: "SEO and AI search support for businesses that need to be trusted first",
+    eyebrow: "About Better Search",
+    intro: [
+      "Better Search helps high-trust UK service businesses become easier to find on Google and easier to understand in AI search tools.",
+      "We focus on businesses where someone usually compares carefully before making contact. That includes clinics, consultants, accountants, legal firms, dentists, therapists, and specialist local providers.",
+      "The aim is not broad traffic for its own sake. The aim is clearer visibility for the services, locations, and questions that lead to better enquiries.",
+    ],
+    principles: [
+      {
+        title: "Evidence first",
+        description:
+          "We do not use fake testimonials, inflated case studies, or made-up performance numbers. If something cannot be checked, we say so.",
+      },
+      {
+        title: "Built for high-trust services",
+        description:
+          "We work on websites where clarity, credibility, and decision support matter before someone calls or books.",
+      },
+      {
+        title: "Google and AI search",
+        description:
+          "Search now includes classic rankings, local search, AI summaries, and answer-driven discovery. The site needs to make sense in all of them.",
+      },
+    ],
+    sections: [
+      {
+        title: "Who Better Search is for",
+        paragraphs: [
+          "Better Search is for service businesses that need to look credible before the first conversation happens. In these markets, people compare carefully, read reviews, check qualifications, and look for signs that a provider understands their need.",
+          "That usually means your website has to do more than attract a click. It has to explain the service clearly, show where you work, answer practical questions, and make the next step feel low-friction.",
+        ],
+      },
+      {
+        title: "What we mean by high-trust visibility",
+        paragraphs: [
+          "High-trust visibility means showing up clearly for the right searches and giving people enough confidence to keep reading, compare you fairly, and enquire.",
+          "For Better Search, that usually means stronger service pages, better internal linking, clearer local relevance, FAQ structure, useful supporting content, and trust signals that are already true.",
+        ],
+      },
+      {
+        title: "What we actually work on",
+        paragraphs: [
+          "The work is practical. We audit the site, find the pages most likely to affect enquiries, and improve the areas that help both Google and AI tools understand the business.",
+        ],
+        bullets: [
+          "Technical checks around crawlability, indexation, canonicals, and metadata",
+          "Service page rewrites and structure improvements",
+          "Internal links between homepage, services, locations, guides, and FAQs",
+          "Location relevance for the towns and areas you genuinely serve",
+          "Structured data and answer-ready page sections",
+          "Trust signals such as qualifications, process clarity, policies, and review handling",
+        ],
+      },
+      {
+        title: "What we do not do",
+        paragraphs: [
+          "We are deliberately conservative about claims because credibility matters.",
+        ],
+        bullets: [
+          "No fake reviews, fake clients, fake metrics, or unsupported ranking promises",
+          "No thin page sprawl built only to capture keywords",
+          "No jargon-heavy reporting that hides what changed",
+          "No pressure to chase irrelevant traffic when the enquiry path is still weak",
+        ],
+      },
+      {
+        title: "How we work with clients",
+        paragraphs: [
+          "Most work starts with an audit and a clear set of priorities. From there, we either improve the key pages directly or build a content and implementation plan around them.",
+          "The reporting style is simple: what we checked, what changed, why it matters, and what should happen next.",
+        ],
+      },
+      {
+        title: "Why this approach matters",
+        paragraphs: [
+          "Many SEO sites try to sell confidence with exaggerated proof. That can work in the short term, but it is a poor fit for trust-led businesses that need careful positioning.",
+          "A better starting point is a site that is easier to understand, easier to compare, and easier to trust. That is the standard Better Search is built around.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Who is Better Search best suited to?",
+        answer:
+          "Better Search is best suited to high-trust UK service businesses such as clinics, consultants, dentists, therapists, accountants, legal firms, and specialist local providers.",
+      },
+      {
+        question: "Do you only work with businesses in Cornwall and Surrey?",
+        answer:
+          "No. Cornwall and Surrey are active location pages on the site, but Better Search supports high-trust service businesses across the UK.",
+      },
+      {
+        question: "Do you help with AI search visibility as well as Google SEO?",
+        answer:
+          "Yes. The work includes making a business easier for AI search systems to understand through clearer service pages, better answers, stronger trust signals, and consistent business information.",
+      },
+      {
+        question: "Do you guarantee rankings or traffic growth?",
+        answer:
+          "No. We focus on improving the conditions that support better visibility and enquiries, but we do not make unsupported guarantees.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See the audit and implementation process Better Search uses first.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "Explore SEO in Surrey",
+        description:
+          "Commercial local page for high-trust businesses across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "Explore SEO in Cornwall",
+        description:
+          "Commercial local page for service businesses across Truro, Newquay, and Falmouth.",
+      },
+    ],
+  },
+  methodology: {
+    slug: "methodology",
+    path: "/methodology",
+    metaTitle:
+      "SEO & GEO Methodology for High-Trust Service Businesses | Better Search",
+    metaDescription:
+      "See how Better Search audits, prioritises, and improves SEO and AI search visibility for high-trust UK service businesses.",
+    h1: "How Better Search approaches SEO and AI search visibility",
+    eyebrow: "Methodology",
+    intro: [
+      "Better Search uses a practical SEO and GEO process designed for high-trust service businesses.",
+      "The focus is simple: make the business easier to crawl, easier to understand, easier to trust, and easier to choose when the right customer is already searching.",
+      "That usually means fixing core pages before scaling content, and using evidence rather than guesses when deciding what to improve next.",
+    ],
+    principles: [
+      {
+        title: "Audit before advice",
+        description:
+          "We start with crawlability, indexation, page quality, and trust signals before proposing bigger content work.",
+      },
+      {
+        title: "Commercial pages first",
+        description:
+          "The pages closest to enquiries usually deserve the first round of improvements, not the easiest blog ideas.",
+      },
+      {
+        title: "Answer-ready structure",
+        description:
+          "Pages should work for Google rankings, AI summaries, and real people scanning for confidence.",
+      },
+    ],
+    sections: [
+      {
+        title: "1. Check crawlability and indexation first",
+        paragraphs: [
+          "If a page is blocked, duplicated, weakly canonicalised, or badly linked, content improvements will have less effect. That is why the first layer of work is technical clarity.",
+          "We check robots, sitemap coverage, canonicals, titles, descriptions, headings, indexability, and internal discovery paths before moving deeper into content decisions.",
+        ],
+      },
+      {
+        title: "2. Prioritise the pages that drive enquiries",
+        paragraphs: [
+          "Service pages, location pages, core about pages, and strong guides usually deserve attention before wider content expansion.",
+          "For high-trust businesses, these pages often do the real conversion work. They need clear copy, accurate service positioning, useful FAQs, honest trust signals, and obvious next steps.",
+        ],
+      },
+      {
+        title: "3. Build supporting content around real questions",
+        paragraphs: [
+          "Once the main pages are clearer, supporting guides and FAQs help cover the questions people ask before choosing a provider.",
+          "The aim is not volume publishing. The aim is to create supporting content that strengthens internal linking, topical coverage, and answer readiness.",
+        ],
+        bullets: [
+          "Category and service explainers",
+          "Location-specific guidance for areas you genuinely serve",
+          "Comparison and buyer-fit questions",
+          "Practical FAQs that reduce hesitation before contact",
+        ],
+      },
+      {
+        title: "4. Strengthen trust and entity clarity",
+        paragraphs: [
+          "AI search systems and traditional search engines both respond better when a business is easy to identify and verify.",
+          "That means consistent business information, real credentials, clear service descriptions, transparent process notes, and structured data that matches the page topic.",
+        ],
+      },
+      {
+        title: "5. Improve answer extraction for AI search",
+        paragraphs: [
+          "GEO and AEO are mostly about clarity. The best pages answer specific questions directly, define terms plainly, use descriptive headings, and keep important points easy to extract.",
+          "FAQ blocks, concise definitions, internal links, and topic-relevant schema help support that without turning the copy into robotic SEO text.",
+        ],
+      },
+      {
+        title: "6. Measure what changed and what still needs work",
+        paragraphs: [
+          "The final step is not vanity reporting. It is a short record of what was fixed, which pages were improved, what new internal links were added, and which checks still need evidence.",
+          "When external proof is unavailable, the correct status is not checked, not a guess. That keeps decisions grounded and reviewable.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Do you always start with an audit?",
+        answer:
+          "Usually, yes. The audit helps confirm what is indexable, which pages matter most, where trust is weak, and which fixes should come first.",
+      },
+      {
+        question: "How do you prioritise SEO work?",
+        answer:
+          "Better Search prioritises crawlability, key commercial pages, internal links, trust signals, and supporting content in that order unless the evidence suggests otherwise.",
+      },
+      {
+        question: "What does GEO mean in practice?",
+        answer:
+          "In practice, GEO means making a business easier for AI tools to understand, summarise, compare, and recommend through clearer structure, stronger answers, and better trust signals.",
+      },
+      {
+        question: "Do you only advise, or do you make the changes too?",
+        answer:
+          "Better Search can both identify the work and implement the page, content, and structural improvements needed on the site.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/about",
+        label: "About Better Search",
+        description:
+          "See who Better Search is built for and how it positions the work.",
+      },
+      {
+        href: "/seo-for-service-businesses-in-surrey",
+        label: "Read the Surrey guide",
+        description:
+          "Supporting guide covering SEO for clinics, consultants, and service firms in Surrey.",
+      },
+      {
+        href: "/how-to-get-found-on-google-in-cornwall",
+        label: "Read the Cornwall guide",
+        description:
+          "Supporting guide covering local search behaviour and trust signals in Cornwall.",
+      },
+    ],
+  },
+};
+
 export const sitemapPages = [
   homeSeo.path,
+  "/about",
+  "/methodology",
   "/seo-cornwall",
   "/seo-surrey",
   "/how-to-get-found-on-google-in-cornwall",

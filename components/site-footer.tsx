@@ -11,8 +11,11 @@ export function SiteFooter() {
           <Link className="hover:text-slate-950" href="/#services">
             Services
           </Link>
-          <Link className="hover:text-slate-950" href="/#pricing">
-            Pricing
+          <Link className="hover:text-slate-950" href="/about">
+            About
+          </Link>
+          <Link className="hover:text-slate-950" href="/methodology">
+            Methodology
           </Link>
           <Link className="hover:text-slate-950" href="/seo-cornwall">
             SEO Cornwall
