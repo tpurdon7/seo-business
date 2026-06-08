@@ -646,6 +646,482 @@ export const cornerstonePages: Record<CornerstonePage["slug"], CornerstonePage> 
   },
 };
 
+export type IndustryPage = {
+  slug: "seo-for-clinics" | "seo-for-consultants" | "seo-for-dentists";
+  path: string;
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  eyebrow: string;
+  intro: string[];
+  idealFor: string[];
+  decisionFactors: Array<{
+    title: string;
+    description: string;
+  }>;
+  sections: Array<{
+    title: string;
+    paragraphs: string[];
+    bullets?: string[];
+  }>;
+  faqs: FaqItem[];
+  relatedLinks: Array<{
+    href: string;
+    label: string;
+    description: string;
+  }>;
+};
+
+export const industryPages: Record<IndustryPage["slug"], IndustryPage> = {
+  "seo-for-clinics": {
+    slug: "seo-for-clinics",
+    path: "/seo-for-clinics",
+    metaTitle: "SEO for Clinics | Better Search",
+    metaDescription:
+      "SEO for private clinics and specialist healthcare providers that need stronger local visibility, clearer treatment pages, and better patient trust signals.",
+    h1: "SEO for clinics that need patient trust before enquiry",
+    eyebrow: "Clinic SEO",
+    intro: [
+      "Clinic SEO is rarely a traffic problem on its own. Patients compare carefully, check reviews, look for named treatments, and want to feel confident before they call or book.",
+      "That means the strongest clinic SEO work usually starts with treatment-page clarity, local relevance, clinician trust signals, and practical answers that reduce hesitation.",
+      "Better Search helps private clinics and other high-trust healthcare providers make those signals easier for Google, AI tools, and patients to understand.",
+    ],
+    idealFor: [
+      "Private clinics",
+      "Specialist practices",
+      "Physiotherapy clinics",
+      "Aesthetics clinics",
+      "Therapy clinics",
+    ],
+    decisionFactors: [
+      {
+        title: "Treatment clarity",
+        description:
+          "Patients should be able to see exactly what the clinic helps with, who a treatment is for, and what the next step looks like.",
+      },
+      {
+        title: "Clinician credibility",
+        description:
+          "Named practitioners, qualifications, process detail, and practical trust signals matter more than polished copy on their own.",
+      },
+      {
+        title: "Local intent",
+        description:
+          "Many clinic searches include town, area, or nearby intent, so local relevance still matters even when the service is specialist.",
+      },
+    ],
+    sections: [
+      {
+        title: "Why clinic SEO is different",
+        paragraphs: [
+          "Patients do not choose a clinic the same way they choose a low-risk purchase. They want reassurance about the treatment, the practitioner, the process, and whether the clinic feels credible.",
+          "That makes trust and clarity part of the SEO brief. If the page ranks but leaves too many questions unanswered, it still underperforms.",
+        ],
+      },
+      {
+        title: "Treatment pages should answer decision-stage questions",
+        paragraphs: [
+          "A clinic website usually needs more than one broad services page. Each core treatment or service line should have its own useful page with plain-English explanations, expected fit, process notes, and clear next steps.",
+          "These pages help with both rankings and conversion because they line up better with the searches patients actually make before contacting a clinic.",
+        ],
+        bullets: [
+          "What the treatment is and who it is for",
+          "Common concerns or eligibility questions",
+          "What a consultation or appointment involves",
+          "What someone should do next if they are considering it",
+        ],
+      },
+      {
+        title: "Trust signals need to sit close to the booking decision",
+        paragraphs: [
+          "For clinics, trust signals are part of the page quality, not decoration. Reviews, practitioner bios, qualifications, memberships, and process detail all help reduce uncertainty when they are easy to find.",
+          "The aim is not to force proof everywhere. The aim is to place real, relevant trust signals near the pages where someone is deciding whether to enquire.",
+        ],
+      },
+      {
+        title: "Local search still matters for clinics",
+        paragraphs: [
+          "Even specialist clinics usually depend on local or regional searches. People often search by treatment plus town, compare nearby options, or use maps and reviews as part of the shortlist.",
+          "Your site should make locations served, contact routes, and booking options obvious without creating thin local pages that add no value.",
+        ],
+      },
+      {
+        title: "AI search is becoming part of patient research",
+        paragraphs: [
+          "Patients increasingly ask AI tools for help comparing treatments, understanding the process, or narrowing down providers. That makes concise answers, clean headings, and consistent clinic information more valuable.",
+          "Good GEO for clinics usually looks like better service definition, stronger entity clarity, and pages that answer sensible pre-enquiry questions directly.",
+        ],
+      },
+      {
+        title: "What to fix first on a clinic website",
+        paragraphs: [
+          "Start with the pages most closely tied to bookings. Tighten treatment pages, surface clinician trust signals, make local relevance obvious, and add practical FAQs that reduce hesitation before contact.",
+          "That usually gives a clinic a better base than jumping straight into a wide content calendar.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What should a clinic website prioritise for SEO first?",
+        answer:
+          "Usually the treatment pages, practitioner trust signals, local relevance, and clear booking routes. Those pages tend to affect both visibility and enquiries first.",
+      },
+      {
+        question: "Does local SEO still matter for specialist clinics?",
+        answer:
+          "Yes. Even specialist clinics are often compared locally or regionally, so clear location signals and nearby intent still matter.",
+      },
+      {
+        question: "Can Better Search help clinics with AI search visibility?",
+        answer:
+          "Yes. The work focuses on clearer treatment pages, stronger trust signals, consistent clinic information, and answer-ready content that AI tools can interpret more accurately.",
+      },
+      {
+        question: "Do clinics need separate pages for each treatment?",
+        answer:
+          "Usually for the main treatments, yes. Separate pages make it easier to match real search intent and answer specific patient questions.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the high-trust SEO guide",
+        description:
+          "Broader guidance on trust-led SEO for clinics, consultants, and other careful-buying markets.",
+      },
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See how Better Search audits, prioritises, and improves the pages that matter most first.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "SEO in Surrey",
+        description:
+          "Local commercial page for clinics and service businesses across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "SEO in Cornwall",
+        description:
+          "Local commercial page for clinics and service businesses across Truro, Newquay, and Falmouth.",
+      },
+      {
+        href: "/seo-for-dentists",
+        label: "SEO for dentists",
+        description:
+          "Related industry page for dental practices with stronger treatment and local intent needs.",
+      },
+    ],
+  },
+  "seo-for-consultants": {
+    slug: "seo-for-consultants",
+    path: "/seo-for-consultants",
+    metaTitle: "SEO for Consultants | Better Search",
+    metaDescription:
+      "SEO for consultants and boutique advisory firms that need clearer positioning, stronger expert trust signals, and pages built for comparison searches.",
+    h1: "SEO for consultants who need to look credible before the first call",
+    eyebrow: "Consultant SEO",
+    intro: [
+      "Consultant SEO works best when the website explains a clear commercial offer, not just broad expertise. Buyers compare carefully, look for specialism, and want confidence that you understand their problem.",
+      "That means positioning, service clarity, and practical proof usually matter more than publishing generic thought-leadership content at volume.",
+      "Better Search helps consultants and boutique advisory firms make those signals easier to find on Google and easier for AI tools to summarise accurately.",
+    ],
+    idealFor: [
+      "Independent consultants",
+      "Boutique consultancies",
+      "Fractional specialists",
+      "Advisory firms",
+      "Sector experts",
+    ],
+    decisionFactors: [
+      {
+        title: "Positioning clarity",
+        description:
+          "The site should make it obvious what problem the consultant solves, who the work is for, and where the offer is strongest.",
+      },
+      {
+        title: "Expert proof",
+        description:
+          "Specific experience, process clarity, and useful examples usually build more trust than vague authority language.",
+      },
+      {
+        title: "Commercial next steps",
+        description:
+          "Prospects need to see how to start, what type of engagement fits, and whether the offer suits their situation.",
+      },
+    ],
+    sections: [
+      {
+        title: "Consultant SEO starts with positioning",
+        paragraphs: [
+          "Many consultant websites are too broad. They say a lot about experience but too little about the exact business problem they solve, the audience they help, or the shape of the engagement.",
+          "Clear positioning helps rankings because it creates more focused pages. It also helps conversion because a buyer can see faster whether the consultant is relevant.",
+        ],
+      },
+      {
+        title: "Service pages should match problem-led searches",
+        paragraphs: [
+          "Consulting buyers often search by outcome, challenge, or specialist area rather than the word consultant on its own. Your main pages should reflect those searches in a natural way.",
+          "A strong consultant page usually explains the problem, the approach, the fit, and the next step without hiding behind vague strategic language.",
+        ],
+        bullets: [
+          "Describe the service in plain English",
+          "Name the audiences or sectors you help most",
+          "Explain the delivery model or engagement shape",
+          "Add FAQs around fit, timing, and process",
+        ],
+      },
+      {
+        title: "Credibility should come from specifics",
+        paragraphs: [
+          "Consulting SEO often improves when the site gets more concrete. Clear founder or expert bios, sector experience, practical process notes, and useful examples help people trust the offer more quickly.",
+          "You do not need inflated case studies to do this well. Often an anonymised example, a methodology page, or clearer service definition is enough to improve the page.",
+        ],
+      },
+      {
+        title: "Comparison content can support consultant SEO",
+        paragraphs: [
+          "Prospects compare providers carefully. That creates useful search intents around service fit, process questions, pricing context, timelines, and what a consultant actually does.",
+          "Supporting guides or FAQs around those questions can strengthen both internal links and conversion readiness when they point back to the commercial pages.",
+        ],
+      },
+      {
+        title: "Local and sector relevance still matter",
+        paragraphs: [
+          "Some consultants win nationally, some regionally, and many do both. If buyers search by location, the site should support that honestly. If the main buying signal is sector or specialism, the content structure should make that clearer than geography.",
+          "The right balance depends on the searches that already match how you sell.",
+        ],
+      },
+      {
+        title: "What to fix first on a consultant site",
+        paragraphs: [
+          "Start with the homepage, core service pages, and about or methodology pages. Tighten the positioning, make expertise specific, and add the proof and FAQs that help a prospect decide whether to book a call.",
+          "Once those pages are clearer, supporting content has a much stronger foundation.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What should consultants focus on for SEO first?",
+        answer:
+          "Usually the homepage, core service pages, positioning, and expert trust signals. Those assets shape both relevance and conversion quality.",
+      },
+      {
+        question: "Do consultants need blog content to rank?",
+        answer:
+          "Sometimes, but not first. Most consultant sites benefit more from clearer commercial pages and better internal links before broad content expansion.",
+      },
+      {
+        question: "Can consultant SEO help with AI search visibility too?",
+        answer:
+          "Yes. Clear service definitions, direct answers, and consistent expertise signals make consultant websites easier for AI tools to interpret and compare.",
+      },
+      {
+        question: "Should consultants create pages by sector or by service?",
+        answer:
+          "It depends on how prospects search and how the offer is sold. Often the best structure is a small number of strong service pages supported by sector-specific context where demand is real.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the high-trust SEO guide",
+        description:
+          "Broader guidance on trust-led SEO for consultants, clinics, and professional services.",
+      },
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See how Better Search prioritises commercial pages, internal links, and trust signals first.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "SEO in Surrey",
+        description:
+          "Local commercial page for consultants and professional firms across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "SEO in Cornwall",
+        description:
+          "Local commercial page for consultants and service businesses across Truro, Newquay, and Falmouth.",
+      },
+      {
+        href: "/seo-for-clinics",
+        label: "SEO for clinics",
+        description:
+          "Related industry page covering trust-led SEO for private clinics and specialist healthcare providers.",
+      },
+    ],
+  },
+  "seo-for-dentists": {
+    slug: "seo-for-dentists",
+    path: "/seo-for-dentists",
+    metaTitle: "SEO for Dentists | Better Search",
+    metaDescription:
+      "SEO for dental practices that need stronger treatment pages, clearer local trust signals, and better paths from search to appointment.",
+    h1: "SEO for dentists who need stronger treatment and local search visibility",
+    eyebrow: "Dental SEO",
+    intro: [
+      "Dental SEO sits close to an enquiry or booking decision. Patients compare treatments, reviews, clinicians, location, and practical details before they choose a practice.",
+      "That makes treatment-page quality, local visibility, and trust signals central to the SEO work. Generic page copy usually loses to clearer, more specific competitor pages.",
+      "Better Search helps dental practices make those decision-stage pages easier to understand for Google, AI tools, and prospective patients.",
+    ],
+    idealFor: [
+      "Private dental practices",
+      "Mixed NHS and private practices",
+      "Cosmetic dentistry providers",
+      "Implant clinics",
+      "Family dental practices",
+    ],
+    decisionFactors: [
+      {
+        title: "Treatment intent",
+        description:
+          "Patients often search for specific treatments, not dentistry in general, so the site should reflect the real treatment mix clearly.",
+      },
+      {
+        title: "Practice trust signals",
+        description:
+          "Clinician detail, reviews, finance or pricing context, and clear booking routes help reduce hesitation before contact.",
+      },
+      {
+        title: "Local competition",
+        description:
+          "Dental searches are often highly local, which means local relevance and internal links need to support the treatment pages properly.",
+      },
+    ],
+    sections: [
+      {
+        title: "Dental SEO is highly local and treatment-led",
+        paragraphs: [
+          "Most dental searches happen with a treatment or local angle. Someone might search for Invisalign in Guildford, emergency dentist in Truro, or dental implants near them before ever looking at a general practice page.",
+          "That means a dental site needs both local relevance and treatment clarity. Broad service summaries are rarely enough on their own.",
+        ],
+      },
+      {
+        title: "Each core treatment deserves its own useful page",
+        paragraphs: [
+          "The main treatments should usually have dedicated pages with clear explanations, fit, next steps, and answers to common patient questions. That helps the page match search intent more closely and gives patients more confidence.",
+          "The best pages feel practical, not sales-heavy. They explain the treatment and make the route to an appointment obvious.",
+        ],
+        bullets: [
+          "Name the treatment clearly in the title and heading structure",
+          "Explain who the treatment suits and what the process involves",
+          "Answer the common practical objections or uncertainties",
+          "Show the next step for booking or making contact",
+        ],
+      },
+      {
+        title: "Trust signals should remove uncertainty",
+        paragraphs: [
+          "Dental patients want reassurance. Reviews, clinician bios, qualifications, process notes, and clear information about the practice can all help when they are easy to find.",
+          "This is especially important for high-consideration treatments where patients compare several providers before making contact.",
+        ],
+      },
+      {
+        title: "Google Business Profile and local pages support the main treatment pages",
+        paragraphs: [
+          "Maps, reviews, and local intent often play a big part in dental discovery. The site should reinforce the same core information as the Google Business Profile and make the practice location obvious.",
+          "If the practice serves multiple real local areas, supporting location content can help, but it should still add useful context rather than repeating the same template everywhere.",
+        ],
+      },
+      {
+        title: "AI search is becoming part of treatment comparison",
+        paragraphs: [
+          "Patients increasingly use AI tools to compare treatments, understand costs, or ask what questions they should ask a provider. Clear treatment definitions, concise answers, and consistent clinic information make it easier for AI systems to summarise the practice accurately.",
+          "That is usually a by-product of better treatment pages, not a separate gimmick.",
+        ],
+      },
+      {
+        title: "What to fix first on a dental site",
+        paragraphs: [
+          "Start with the treatment pages that matter commercially, then tighten local signals, clinician trust pages, and FAQs that reduce uncertainty before an appointment request.",
+          "That gives the site a stronger base than expanding into thin content too early.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What matters most for dental SEO?",
+        answer:
+          "Usually treatment-page quality, local visibility, reviews and trust signals, and clear routes to an appointment or enquiry.",
+      },
+      {
+        question: "Do dentists need separate pages for treatments like implants or Invisalign?",
+        answer:
+          "Usually, yes. Dedicated pages make it easier to match treatment-led searches and answer the patient questions tied to each service.",
+      },
+      {
+        question: "Is local SEO especially important for dental practices?",
+        answer:
+          "Yes. Dental searches are often highly local, so town, area, map visibility, and location trust signals typically matter a lot.",
+      },
+      {
+        question: "Can Better Search help dentists with AI search visibility?",
+        answer:
+          "Yes. The work focuses on clearer treatment pages, stronger trust signals, and answer-ready content that helps AI tools interpret the practice more accurately.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the high-trust SEO guide",
+        description:
+          "Broader guidance on trust-led SEO for dentists, clinics, and other careful-buying services.",
+      },
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See how Better Search approaches treatment pages, trust signals, local relevance, and priority fixes.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "SEO in Surrey",
+        description:
+          "Local commercial page for dental practices and service businesses across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "SEO in Cornwall",
+        description:
+          "Local commercial page for dental practices and service businesses across Truro, Newquay, and Falmouth.",
+      },
+      {
+        href: "/seo-for-clinics",
+        label: "SEO for clinics",
+        description:
+          "Related industry page for private clinics that also need trust-led treatment and local visibility work.",
+      },
+    ],
+  },
+};
+
+export const industryPageLinks = [
+  {
+    href: "/seo-for-clinics",
+    title: "SEO for clinics",
+    description:
+      "For private clinics and specialist healthcare providers that need stronger treatment pages and patient trust signals.",
+  },
+  {
+    href: "/seo-for-consultants",
+    title: "SEO for consultants",
+    description:
+      "For consultants and advisory firms that need clearer positioning, expert proof, and stronger comparison pages.",
+  },
+  {
+    href: "/seo-for-dentists",
+    title: "SEO for dentists",
+    description:
+      "For dental practices that need treatment-led pages, local visibility, and clearer routes to appointment enquiries.",
+  },
+] as const;
+
 export type TrustPage = {
   slug: "about" | "methodology";
   path: string;
@@ -945,6 +1421,9 @@ export const sitemapPages = [
   "/about",
   "/methodology",
   "/seo-for-high-trust-service-businesses",
+  "/seo-for-clinics",
+  "/seo-for-consultants",
+  "/seo-for-dentists",
   "/seo-cornwall",
   "/seo-surrey",
   "/how-to-get-found-on-google-in-cornwall",

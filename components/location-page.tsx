@@ -13,7 +13,11 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { bookingLink, type LocationPage as LocationPageContent } from "@/lib/site";
+import {
+  bookingLink,
+  industryPageLinks,
+  type LocationPage as LocationPageContent,
+} from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const themes = {
@@ -242,6 +246,27 @@ export function LocationPage({ page }: { page: LocationPageContent }) {
                     Read the supporting guide
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
+                </div>
+              </Card>
+
+              <Card className="rounded-[1.75rem] bg-white/88 p-7">
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Industry pages
+                </p>
+                <div className="mt-5 space-y-4">
+                  {industryPageLinks.map((item) => (
+                    <div key={item.href}>
+                      <Link
+                        className="font-semibold text-slate-950 hover:text-orange-700"
+                        href={item.href}
+                      >
+                        {item.title}
+                      </Link>
+                      <p className="mt-1 text-sm leading-6 text-slate-600">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </Card>
             </div>

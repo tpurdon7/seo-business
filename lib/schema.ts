@@ -3,6 +3,7 @@ import {
   guidePages,
   homeFaqs,
   homeSeo,
+  industryPages,
   locationPages,
   logo,
   siteName,
@@ -11,6 +12,7 @@ import {
   type FaqItem,
   type CornerstonePage,
   type GuidePage,
+  type IndustryPage,
   type LocationPage,
   type TrustPage,
 } from "@/lib/site";
@@ -96,11 +98,17 @@ function professionalServiceSchema() {
   };
 }
 
-function serviceSchema(path = "/") {
+function serviceSchema(
+  path = "/",
+  overrides?: {
+    name?: string;
+    description?: string;
+  },
+) {
   return {
     "@type": "Service",
     "@id": `${siteUrl}${path}#seo-geo-service`,
-    name: "SEO and GEO services for service businesses",
+    name: overrides?.name ?? "SEO and GEO services for service businesses",
     serviceType: ["SEO", "Local SEO", "GEO", "AI search optimisation"],
     provider: { "@id": `${siteUrl}/#organization` },
     audience: audienceTypes.map((audienceType) => ({
@@ -110,6 +118,7 @@ function serviceSchema(path = "/") {
     areaServed,
     serviceArea: areaServed,
     description:
+      overrides?.description ??
       "SEO, local SEO, and GEO support for high-trust service businesses that want to improve visibility on Google and in AI search tools.",
   };
 }
@@ -212,6 +221,26 @@ export function cornerstonePageJsonLd(slug: CornerstonePage["slug"]) {
       websiteSchema(),
       professionalServiceSchema(),
       serviceSchema(page.path),
+      webPageSchema(page.path, page.metaTitle, page.metaDescription),
+      faqSchema(page.path, page.faqs),
+      breadcrumbSchema({ path: page.path, name: page.h1 }),
+    ],
+  };
+}
+
+export function industryPageJsonLd(slug: IndustryPage["slug"]) {
+  const page = industryPages[slug];
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema(),
+      websiteSchema(),
+      professionalServiceSchema(),
+      serviceSchema(page.path, {
+        name: page.h1,
+        description: page.metaDescription,
+      }),
       webPageSchema(page.path, page.metaTitle, page.metaDescription),
       faqSchema(page.path, page.faqs),
       breadcrumbSchema({ path: page.path, name: page.h1 }),

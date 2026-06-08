@@ -5,7 +5,11 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { bookingLink, type GuidePage as GuidePageContent } from "@/lib/site";
+import {
+  bookingLink,
+  industryPageLinks,
+  type GuidePage as GuidePageContent,
+} from "@/lib/site";
 
 export function GuidePage({ page }: { page: GuidePageContent }) {
   return (
@@ -151,6 +155,25 @@ export function GuidePage({ page }: { page: GuidePageContent }) {
                 >
                   Read more about {page.supportingLocationAnchor.toLowerCase()}
                 </Link>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <p className="text-sm font-semibold uppercase text-orange-700">Industry pages</p>
+              <div className="mt-4 space-y-4">
+                {industryPageLinks.map((item) => (
+                  <div key={item.href}>
+                    <Link
+                      className="font-semibold text-slate-950 hover:text-orange-700"
+                      href={item.href}
+                    >
+                      {item.title}
+                    </Link>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
               </div>
             </Card>
           </div>

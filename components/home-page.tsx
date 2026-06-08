@@ -21,7 +21,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { bookingLink, homeFaqs } from "@/lib/site";
+import { bookingLink, homeFaqs, industryPageLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const services: Array<{
@@ -828,6 +828,33 @@ export function HomePage() {
             </div>
           </div>
         </Reveal>
+      </section>
+
+      <section className="bg-white px-4 py-24 sm:px-6 lg:px-8">
+        <SectionIntro
+          eyebrow="Industry pages"
+          title="Specific pages for the businesses that compare carefully."
+          description="These niche pages support clinics, consultants, and dentists with clearer search intent coverage and stronger internal links back into the main site."
+        />
+        <div className="mx-auto mt-14 grid max-w-7xl gap-4 lg:grid-cols-3">
+          {industryPageLinks.map((item, index) => (
+            <Reveal delay={index * 0.04} key={item.href}>
+              <Link
+                className="group block h-full rounded-lg border border-slate-200 bg-slate-50 p-6 transition duration-200 hover:-translate-y-1 hover:border-orange-200 hover:bg-white hover:shadow-[0_24px_70px_rgba(15,23,42,0.08)]"
+                href={item.href}
+              >
+                <p className="text-lg font-semibold text-slate-950 group-hover:text-orange-700">
+                  {item.title}
+                </p>
+                <p className="mt-3 leading-7 text-slate-600">{item.description}</p>
+                <span className="mt-6 inline-flex items-center gap-2 font-semibold text-orange-700">
+                  View page
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       <section className="bg-white px-4 py-24 sm:px-6 lg:px-8">
