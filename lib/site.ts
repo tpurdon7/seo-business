@@ -647,7 +647,13 @@ export const cornerstonePages: Record<CornerstonePage["slug"], CornerstonePage> 
 };
 
 export type IndustryPage = {
-  slug: "seo-for-clinics" | "seo-for-consultants" | "seo-for-dentists";
+  slug:
+    | "seo-for-clinics"
+    | "seo-for-consultants"
+    | "seo-for-dentists"
+    | "seo-for-therapists"
+    | "seo-for-accountants"
+    | "seo-for-legal-firms";
   path: string;
   metaTitle: string;
   metaDescription: string;
@@ -1099,6 +1105,432 @@ export const industryPages: Record<IndustryPage["slug"], IndustryPage> = {
       },
     ],
   },
+  "seo-for-therapists": {
+    slug: "seo-for-therapists",
+    path: "/seo-for-therapists",
+    metaTitle: "SEO for Therapists | Better Search",
+    metaDescription:
+      "SEO for therapists, counsellors, and private therapy practices that need clearer service pages, stronger local trust signals, and better enquiry-ready content.",
+    h1: "SEO for therapists who need to look safe, clear, and credible before the first enquiry",
+    eyebrow: "Therapist SEO",
+    intro: [
+      "Therapist SEO is shaped by trust, fit, and sensitivity. People often arrive with a specific concern, compare carefully, and want to feel safe before they contact a private practice.",
+      "That means strong therapy SEO usually starts with clearer service pages, better modality and issue definitions, local relevance, and thoughtful answers to the questions people ask before reaching out.",
+      "Better Search helps therapists and counselling practices make those signals easier for Google, AI tools, and prospective clients to understand.",
+    ],
+    idealFor: [
+      "Private therapists",
+      "Counsellors",
+      "Psychotherapists",
+      "Group therapy practices",
+      "Specialist mental health providers",
+    ],
+    decisionFactors: [
+      {
+        title: "Service clarity",
+        description:
+          "People need to understand what type of therapy you offer, what issues you help with, and whether the practice feels relevant to their situation.",
+      },
+      {
+        title: "Trust and safety signals",
+        description:
+          "Accreditations, therapist bios, process detail, and clear boundaries often matter more than persuasive sales copy.",
+      },
+      {
+        title: "Local and format relevance",
+        description:
+          "Many searches include town, nearby intent, or a preference for online versus in-person therapy, so the page structure should support that honestly.",
+      },
+    ],
+    sections: [
+      {
+        title: "Why therapist SEO needs a different tone",
+        paragraphs: [
+          "Therapy buyers are not just comparing availability. They are looking for signs that the therapist understands the issue, works in a way that feels safe, and is clear about what the next step looks like.",
+          "That means the strongest pages usually feel calm, specific, and practical. Over-polished copy can reduce trust if it makes the service sound vague or generic.",
+        ],
+      },
+      {
+        title: "Service pages should reflect real therapy search intent",
+        paragraphs: [
+          "Many therapy websites rely on one broad services page, but people often search by issue, modality, audience, or location. The website should make that structure clearer without producing thin pages for every possible variation.",
+          "A strong therapy page explains what support is offered, who it may suit, and what happens if someone makes contact.",
+        ],
+        bullets: [
+          "Name the therapy type or issue clearly",
+          "Explain who the support is for and when it may help",
+          "Set out practical next steps for contacting the practice",
+          "Answer common questions about sessions, fit, or format",
+        ],
+      },
+      {
+        title: "Trust signals should reduce hesitation",
+        paragraphs: [
+          "For therapists, trust often comes from clarity rather than volume. Registration or accreditation, therapist experience, confidentiality notes, and a clear explanation of how sessions work all help.",
+          "The aim is not to oversell. It is to remove avoidable uncertainty for someone who may already feel cautious about making contact.",
+        ],
+      },
+      {
+        title: "Local relevance still matters for private therapy",
+        paragraphs: [
+          "Even when sessions are offered online, many people still search by town or nearby area first. Others want reassurance about in-person access, catchment, or whether the therapist serves a specific part of Surrey, Cornwall, or another UK area.",
+          "The site should make those details visible where they genuinely apply, without padding the site with weak local pages.",
+        ],
+      },
+      {
+        title: "AI search will surface the clearest therapy pages",
+        paragraphs: [
+          "People increasingly ask AI tools for help comparing therapy options, understanding modalities, or deciding what kind of support to look for. That makes direct explanations, descriptive headings, and concise FAQs more valuable.",
+          "Good GEO for therapists is usually just better clarity: defined services, honest fit guidance, and stronger trust signals around the therapy process.",
+        ],
+      },
+      {
+        title: "What to fix first on a therapy website",
+        paragraphs: [
+          "Start with the homepage, core therapy pages, therapist bios, and contact path. Make the offer clearer, surface trust and accreditation, and answer the questions that stop the right people from getting in touch.",
+          "That usually gives a stronger base than expanding into broad mental health content too early.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What should therapists prioritise for SEO first?",
+        answer:
+          "Usually the homepage, core therapy pages, local relevance, therapist bios, and the trust signals that help a prospective client feel safe enough to enquire.",
+      },
+      {
+        question: "Do therapists need separate pages for issues or therapy types?",
+        answer:
+          "Often for the main services, yes. Separate pages can help match real search intent if each page adds clear, useful guidance rather than repeating the same copy.",
+      },
+      {
+        question: "Does local SEO matter if sessions are online?",
+        answer:
+          "Usually, yes. Many people still search by town or area first, and local relevance can support trust even when online sessions are available.",
+      },
+      {
+        question: "Can Better Search help therapists with AI search visibility?",
+        answer:
+          "Yes. The work focuses on clearer service definitions, stronger trust signals, and answer-ready content that helps AI tools interpret the practice more accurately.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the high-trust SEO guide",
+        description:
+          "Broader guidance on trust-led SEO for therapists, clinics, and other careful-buying services.",
+      },
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See how Better Search prioritises service pages, trust signals, and the enquiry path first.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "SEO in Surrey",
+        description:
+          "Local commercial page for therapists and service businesses across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "SEO in Cornwall",
+        description:
+          "Local commercial page for therapists and service businesses across Truro, Newquay, and Falmouth.",
+      },
+      {
+        href: "/seo-for-clinics",
+        label: "SEO for clinics",
+        description:
+          "Related industry page for clinic businesses that also need trust-led service and treatment pages.",
+      },
+    ],
+  },
+  "seo-for-accountants": {
+    slug: "seo-for-accountants",
+    path: "/seo-for-accountants",
+    metaTitle: "SEO for Accountants | Better Search",
+    metaDescription:
+      "SEO for accountants and accountancy firms that need clearer service pages, stronger local or sector trust signals, and better enquiry-led search visibility.",
+    h1: "SEO for accountants who need to look credible before a prospect books a call",
+    eyebrow: "Accountant SEO",
+    intro: [
+      "Accountant SEO works best when the website makes the offer easy to understand. Prospects compare carefully, look for the right specialism, and want confidence that the firm understands their stage, sector, or financial need.",
+      "That means stronger accountancy SEO usually starts with clearer service pages, better specialism signals, practical FAQs, and trust cues that reduce uncertainty before contact.",
+      "Better Search helps accountants and accountancy firms make those signals easier for Google, AI tools, and buyers to interpret.",
+    ],
+    idealFor: [
+      "Accountancy firms",
+      "Tax advisers",
+      "Bookkeeping firms",
+      "Fractional finance providers",
+      "Sector-specialist accountants",
+    ],
+    decisionFactors: [
+      {
+        title: "Service and specialism clarity",
+        description:
+          "Prospects should be able to see whether you help with tax, bookkeeping, year-end accounts, advisory work, or a more specific type of need.",
+      },
+      {
+        title: "Commercial trust signals",
+        description:
+          "Credentials, sector fit, process clarity, and straightforward explanations often do more than generic authority copy.",
+      },
+      {
+        title: "Local or audience relevance",
+        description:
+          "Some accountancy firms win on local intent, others on niche audience fit. The site should support the way people actually search for the firm.",
+      },
+    ],
+    sections: [
+      {
+        title: "Why accountant SEO often underperforms",
+        paragraphs: [
+          "Many accountancy websites sound credible but stay too broad. They mention experience and support, but do not clearly show what services the firm offers, who it is best for, or why a prospect should take the next step.",
+          "That weakens both rankings and conversion because the page does not line up well with the practical searches buyers make when they compare firms.",
+        ],
+      },
+      {
+        title: "Service pages should match real financial questions",
+        paragraphs: [
+          "Prospects rarely search for accountant in isolation. They often search by service, business stage, company type, or a specific problem. The main pages should reflect those search patterns naturally.",
+          "A strong accountancy page explains the service, the fit, the likely process, and the route to a conversation in plain English.",
+        ],
+        bullets: [
+          "Make the core service lines clear",
+          "Explain who the service is for",
+          "Answer practical questions around process, timing, or fit",
+          "Show the next step for speaking to the firm",
+        ],
+      },
+      {
+        title: "Trust comes from clarity and specificity",
+        paragraphs: [
+          "Accountant SEO improves when the site gets more specific. Named expertise, software familiarity where relevant, sector fit, and honest process detail can all help a prospect trust the page faster.",
+          "You do not need inflated claims or fake case studies. Often the better move is a clearer service structure and more direct answers to common buyer questions.",
+        ],
+      },
+      {
+        title: "Local SEO and niche SEO should not compete with each other",
+        paragraphs: [
+          "Some firms need local visibility for nearby searches. Others win more from industry niches, startup work, contractor services, or specialist tax support. Many need a blend of both.",
+          "The website structure should make the main commercial angle obvious rather than trying to force every page to do every job.",
+        ],
+      },
+      {
+        title: "AI search rewards cleaner explanations",
+        paragraphs: [
+          "Prospects increasingly ask AI tools questions about tax support, bookkeeping, small business accounting, or what kind of accountant they need. Clear service definitions, direct FAQs, and consistent business information make it easier for those tools to summarise the firm accurately.",
+          "That usually comes from better commercial pages, not from trying to write for robots.",
+        ],
+      },
+      {
+        title: "What to fix first on an accountancy website",
+        paragraphs: [
+          "Start with the homepage, core service pages, sector or audience pages where demand is real, and the trust content that helps someone decide whether to book a call.",
+          "Once those pages are clearer, supporting guides and FAQs become much more useful.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What should accountants focus on for SEO first?",
+        answer:
+          "Usually the homepage, core service pages, any real niche or sector pages, and the trust signals that help a buyer understand the fit quickly.",
+      },
+      {
+        question: "Do accountancy firms need pages for each service?",
+        answer:
+          "Usually for the main service lines, yes. Separate pages help match search intent and give prospects a clearer route to the service they actually need.",
+      },
+      {
+        question: "Should accountants target local SEO or niche SEO?",
+        answer:
+          "It depends on how the firm wins work. Some firms need strong local visibility, while others benefit more from pages built around audience or service specialisms.",
+      },
+      {
+        question: "Can Better Search help accountants with AI search visibility?",
+        answer:
+          "Yes. The work focuses on clearer service pages, better answer structure, and stronger trust signals so the firm is easier for AI tools to interpret and compare.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the high-trust SEO guide",
+        description:
+          "Broader guidance on trust-led SEO for accountants, consultants, and other professional services.",
+      },
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See how Better Search prioritises commercial pages, internal links, and proof structure first.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "SEO in Surrey",
+        description:
+          "Local commercial page for accountants and professional firms across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "SEO in Cornwall",
+        description:
+          "Local commercial page for accountants and service businesses across Truro, Newquay, and Falmouth.",
+      },
+      {
+        href: "/seo-for-consultants",
+        label: "SEO for consultants",
+        description:
+          "Related industry page for advisory-led businesses that also need clearer positioning and stronger proof.",
+      },
+    ],
+  },
+  "seo-for-legal-firms": {
+    slug: "seo-for-legal-firms",
+    path: "/seo-for-legal-firms",
+    metaTitle: "SEO for Legal Firms | Better Search",
+    metaDescription:
+      "SEO for solicitors and legal firms that need stronger service pages, better local or practice-area visibility, and clearer trust signals before enquiry.",
+    h1: "SEO for legal firms that need clearer practice pages and stronger trust before enquiry",
+    eyebrow: "Legal SEO",
+    intro: [
+      "Legal SEO is shaped by trust, clarity, and service fit. Prospective clients often compare firms carefully, look for the right practice area, and want reassurance that the firm understands the issue before they make contact.",
+      "That means the strongest legal SEO work usually starts with clearer practice-area pages, better trust signals, sensible local relevance, and answers to the practical questions clients ask before instructing a firm.",
+      "Better Search helps solicitors and legal firms make those signals easier for Google, AI tools, and prospective clients to understand.",
+    ],
+    idealFor: [
+      "Solicitors",
+      "Boutique legal firms",
+      "Specialist practice-area teams",
+      "Regional law firms",
+      "Private client legal services",
+    ],
+    decisionFactors: [
+      {
+        title: "Practice-area clarity",
+        description:
+          "Prospective clients should be able to see quickly whether the firm handles the specific legal issue they need help with.",
+      },
+      {
+        title: "Credibility and professionalism",
+        description:
+          "Solicitor profiles, regulatory clarity, process notes, and straightforward guidance usually build more trust than polished but vague copy.",
+      },
+      {
+        title: "Location and jurisdiction signals",
+        description:
+          "Many legal searches include a town or region, while others depend more on specialist practice area fit. The site should support both where they are real.",
+      },
+    ],
+    sections: [
+      {
+        title: "Why legal SEO needs stronger page structure",
+        paragraphs: [
+          "Legal buyers often arrive with a specific issue and little patience for vague language. They want to know whether the firm handles the matter, what the next step looks like, and whether the team feels credible.",
+          "That makes structure important. A page that ranks but does not make the service clear still leaves too much friction before enquiry.",
+        ],
+      },
+      {
+        title: "Practice-area pages should match the way clients search",
+        paragraphs: [
+          "Most firms need more than a broad services page. Core practice areas should usually have their own useful pages with plain-English explanations, fit guidance, and clear next steps.",
+          "Those pages help Google and AI tools understand the service mix, and they help prospective clients decide whether to keep reading.",
+        ],
+        bullets: [
+          "Name the legal service clearly",
+          "Explain the type of issue the page covers",
+          "Outline what happens if someone gets in touch",
+          "Answer practical questions around fit, timing, or process",
+        ],
+      },
+      {
+        title: "Trust signals should sit close to the service decision",
+        paragraphs: [
+          "In legal markets, credibility comes from the right details being easy to find. Team profiles, regulatory information, process clarity, and straightforward guidance can all reduce hesitation before contact.",
+          "The goal is not to overload every page. It is to support the moment where a prospective client is deciding whether the firm looks right for the matter.",
+        ],
+      },
+      {
+        title: "Local and specialist intent both matter",
+        paragraphs: [
+          "Some legal searches are highly local, especially when someone wants a nearby firm. Others are driven more by specialist need than geography. Many firms need both signals, but the balance should reflect the real commercial focus.",
+          "The site structure should make that balance clear instead of forcing the same message across every page.",
+        ],
+      },
+      {
+        title: "AI search will favour clearer legal explanations",
+        paragraphs: [
+          "Prospective clients increasingly ask AI tools to compare firms, explain legal processes, or identify what type of legal help they may need. Pages with direct explanations, descriptive headings, and accurate service definitions are easier for those tools to summarise.",
+          "That is usually a by-product of better service pages and clearer trust information, not a separate SEO trick.",
+        ],
+      },
+      {
+        title: "What to fix first on a legal website",
+        paragraphs: [
+          "Start with the homepage, core practice-area pages, lawyer or team profiles, and the trust content that helps a prospective client decide whether to get in touch.",
+          "That usually creates a stronger commercial base than expanding into broad generic content too early.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What should legal firms focus on for SEO first?",
+        answer:
+          "Usually the homepage, core practice-area pages, lawyer profiles, local relevance where it matters, and the trust signals that reduce hesitation before enquiry.",
+      },
+      {
+        question: "Do law firms need separate pages for each practice area?",
+        answer:
+          "Usually for the main areas, yes. Separate pages help match real search intent and make it clearer whether the firm handles the issue in question.",
+      },
+      {
+        question: "Is local SEO important for solicitors?",
+        answer:
+          "Often, yes. Many legal searches include town or nearby intent, although some firms also benefit from pages built around specialist practice areas.",
+      },
+      {
+        question: "Can Better Search help legal firms with AI search visibility?",
+        answer:
+          "Yes. The work focuses on clearer service definitions, better answer structure, and stronger trust signals so the firm is easier for AI tools to interpret.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/seo-for-high-trust-service-businesses",
+        label: "Read the high-trust SEO guide",
+        description:
+          "Broader guidance on trust-led SEO for legal firms, accountants, and other professional services.",
+      },
+      {
+        href: "/methodology",
+        label: "Read the methodology",
+        description:
+          "See how Better Search audits commercial pages, trust signals, and internal link structure first.",
+      },
+      {
+        href: "/seo-surrey",
+        label: "SEO in Surrey",
+        description:
+          "Local commercial page for legal firms and professional services across Guildford, Woking, and Farnham.",
+      },
+      {
+        href: "/seo-cornwall",
+        label: "SEO in Cornwall",
+        description:
+          "Local commercial page for legal firms and service businesses across Truro, Newquay, and Falmouth.",
+      },
+      {
+        href: "/seo-for-accountants",
+        label: "SEO for accountants",
+        description:
+          "Related industry page for accountancy firms that also need clearer services, proof, and enquiry paths.",
+      },
+    ],
+  },
 };
 
 export const industryPageLinks = [
@@ -1119,6 +1551,24 @@ export const industryPageLinks = [
     title: "SEO for dentists",
     description:
       "For dental practices that need treatment-led pages, local visibility, and clearer routes to appointment enquiries.",
+  },
+  {
+    href: "/seo-for-therapists",
+    title: "SEO for therapists",
+    description:
+      "For therapists and counselling practices that need clearer service pages, stronger trust signals, and better local fit.",
+  },
+  {
+    href: "/seo-for-accountants",
+    title: "SEO for accountants",
+    description:
+      "For accountants and finance firms that need clearer service lines, specialism signals, and stronger enquiry pages.",
+  },
+  {
+    href: "/seo-for-legal-firms",
+    title: "SEO for legal firms",
+    description:
+      "For solicitors and legal firms that need stronger practice pages, trust cues, and local or specialist visibility.",
   },
 ] as const;
 
@@ -1424,6 +1874,9 @@ export const sitemapPages = [
   "/seo-for-clinics",
   "/seo-for-consultants",
   "/seo-for-dentists",
+  "/seo-for-therapists",
+  "/seo-for-accountants",
+  "/seo-for-legal-firms",
   "/seo-cornwall",
   "/seo-surrey",
   "/how-to-get-found-on-google-in-cornwall",
