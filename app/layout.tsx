@@ -22,6 +22,14 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description: homeSeo.description,
+  icons: {
+    icon: [
+      { url: "/better-search-icon.png", sizes: "512x512", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/better-search-icon.png",
+  },
   robots: {
     index: true,
     follow: true,
