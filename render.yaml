@@ -2,7 +2,7 @@ services:
   - type: worker
     name: better-search-audit-worker
     runtime: node
-    plan: starter
+    plan: free
     region: frankfurt
     buildCommand: npm ci
     startCommand: npm run audit:worker
