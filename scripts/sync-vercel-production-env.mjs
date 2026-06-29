@@ -19,10 +19,18 @@ for (const line of envText.split(/\r?\n/)) {
   env[key] = value;
 }
 
+const targetEnvironment = process.argv[2] === "preview" ? "preview" : "production";
+const targetBranch = targetEnvironment === "preview" ? process.argv[3] : undefined;
 const required = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
   "SUPABASE_SECRET_KEY",
+  "AUDIT_SHARE_SECRET",
+  "AUDIT_RATE_LIMIT_SECRET",
+  "BETTER_SEARCH_ADMIN_EMAILS",
+  "NEXT_PUBLIC_CONTACT_EMAIL",
+  "RESEND_API_KEY",
+  "AUTH_EMAIL_FROM",
 ];
 
 const entries = required.map((key) => [key, env[key]]).filter(([, value]) => value);
@@ -30,23 +38,22 @@ const entries = required.map((key) => [key, env[key]]).filter(([, value]) => val
 entries.push(["NEXT_PUBLIC_SITE_URL", "https://bettersearch.dev"]);
 entries.push(["AUDIT_ALLOWED_ORIGINS", "https://bettersearch.dev,tauri://localhost,http://localhost:3000"]);
 
-if (env.AUDIT_SHARE_SECRET) {
-  entries.push(["AUDIT_SHARE_SECRET", env.AUDIT_SHARE_SECRET]);
-}
-
 function addEnv(key, value) {
   return new Promise((resolve, reject) => {
-    const child = spawn("npx", ["vercel", "env", "add", key, "production"], {
+    const args = ["vercel", "env", "add", key, targetEnvironment];
+    if (targetBranch) {
+      args.push(targetBranch);
+    }
+    args.push("--value", value, "--yes", "--force");
+
+    const child = spawn("npx", args, {
       cwd: process.cwd(),
-      stdio: ["pipe", "pipe", "pipe"],
+      stdio: ["ignore", "pipe", "pipe"],
     });
     let output = "";
 
     child.stdout.on("data", (chunk) => {
       output += chunk.toString();
-      if (/What's the value|What’s the value|Enter the value/i.test(output)) {
-        child.stdin.write(`${value}\n`);
-      }
     });
 
     child.stderr.on("data", (chunk) => {
@@ -62,7 +69,7 @@ function addEnv(key, value) {
         console.log(`Skipped ${key}: already exists`);
         resolve();
       } else {
-        reject(new Error(`Could not sync ${key}.`));
+        reject(new Error(`Could not sync ${key}.\n${output}`));
       }
     });
   });
