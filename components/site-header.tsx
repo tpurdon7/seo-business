@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
-import { bookingLink } from "@/lib/site";
 
 export function SiteHeader() {
   return (
@@ -37,10 +36,13 @@ export function SiteHeader() {
           <Link className="hover:text-slate-950" href="/#faq">
             FAQ
           </Link>
+          <Link className="hover:text-slate-950" href="/account">
+            Log in
+          </Link>
         </nav>
-        <a className={buttonVariants({ size: "sm" })} href={bookingLink}>
+        <Link className={buttonVariants({ size: "sm" })} href="/#free-audit">
           Free audit
-        </a>
+        </Link>
       </div>
     </header>
   );

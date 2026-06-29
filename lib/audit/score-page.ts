@@ -199,6 +199,9 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
   const hasCta = data.ctas.length > 0;
   const hasTrust = data.trustSignals.length > 0;
   const hasContact = data.contactDetails.length > 0;
+  const hasExternalProof =
+    data.externalPresence.googleBusinessProfile.status === "found" ||
+    data.externalPresence.redditForumMentions.status === "found";
   const serviceClear = hasServiceClarity(data);
   const locationClear = hasLocationSignal(data);
   const statusOk = hasSuccessfulStatus(data);
@@ -340,11 +343,11 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
       ),
       item(
         "Proof and authority signals",
-        data.trustSignals.length >= 3 && hasContact
+        data.trustSignals.length >= 3 && hasContact && hasExternalProof
           ? 5
-          : data.trustSignals.length >= 2
+          : data.trustSignals.length >= 2 || (hasTrust && hasExternalProof)
             ? 3
-            : hasTrust
+            : hasTrust || hasExternalProof
               ? 2
               : hasContact
                 ? 1
@@ -352,6 +355,13 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
         5,
         hasTrust
           ? data.trustSignals.slice(0, 2).join(" ")
+          : hasExternalProof
+            ? `External proof found: ${[
+                data.externalPresence.googleBusinessProfile.status === "found" ? data.externalPresence.googleBusinessProfile.summary : "",
+                data.externalPresence.redditForumMentions.status === "found" ? data.externalPresence.redditForumMentions.summary : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}`
           : hasContact
             ? `Contact detail found: ${data.contactDetails.slice(0, 2).join(", ")}. No strong proof line found.`
             : "No visible reviews, testimonials, case studies, accreditations, client proof, or contact details found.",
@@ -429,7 +439,7 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
       ),
       item(
         "Trust and conversion proof",
-        data.trustSignals.length >= 3 ? 5 : data.trustSignals.length >= 1 ? 3 : hasContact ? 1 : 0,
+        data.trustSignals.length >= 3 && hasExternalProof ? 5 : data.trustSignals.length >= 1 ? 3 : hasContact ? 1 : 0,
         5,
         hasTrust
           ? data.trustSignals.slice(0, 2).join(" ")
@@ -447,9 +457,15 @@ export function scorePage(data: AuditExtractedData): AuditScore[] {
     items: [
       item(
         "Visible credibility indicators",
-        Math.min(10, data.trustSignals.length * 2 + (data.trustSignals.length > 0 && hasContact ? 1 : 0)),
+        Math.min(
+          10,
+          data.trustSignals.length * 2 +
+            (data.trustSignals.length > 0 && hasContact ? 1 : 0) +
+            (data.externalPresence.googleBusinessProfile.status === "found" ? 2 : 0) +
+            (data.externalPresence.redditForumMentions.status === "found" ? 1 : 0),
+        ),
         10,
-        `${data.trustSignals.length} trust signal line(s), ${data.contactDetails.length} contact detail(s), and ${data.externalLinks.length} external link(s) found.`,
+        `${data.trustSignals.length} trust signal line(s), ${data.contactDetails.length} contact detail(s), ${data.externalPresence.googleBusinessProfile.status} Google Business Profile check, and ${data.externalPresence.redditForumMentions.status} Reddit/forum mention check.`,
       ),
     ],
   };

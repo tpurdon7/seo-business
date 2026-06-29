@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import { bookingLink } from "@/lib/site";
-
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-white px-4 py-8 sm:px-6 lg:px-8">
@@ -23,9 +21,24 @@ export function SiteFooter() {
           <Link className="hover:text-slate-950" href="/seo-surrey">
             SEO Surrey
           </Link>
-          <a className="hover:text-slate-950" href={bookingLink}>
+          <Link className="hover:text-slate-950" href="/audit">
             Free audit
-          </a>
+          </Link>
+          <Link className="hover:text-slate-950" href="/account">
+            Log in
+          </Link>
+          <Link className="hover:text-slate-950" href="/download">
+            Mac app
+          </Link>
+          <Link className="hover:text-slate-950" href="/contact">
+            Contact
+          </Link>
+          <Link className="hover:text-slate-950" href="/privacy">
+            Privacy
+          </Link>
+          <Link className="hover:text-slate-950" href="/terms">
+            Terms
+          </Link>
         </div>
       </div>
     </footer>

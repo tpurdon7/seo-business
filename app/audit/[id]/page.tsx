@@ -1,18 +1,20 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, CircleAlert, ExternalLink, Gauge, LineChart, Sparkles } from "lucide-react";
+import { ArrowLeft, CheckCircle2, CircleAlert, ExternalLink, Gauge, LineChart, Loader2, Sparkles } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { crawlUrl } from "@/lib/audit/crawl-url";
-import { generateAuditReport } from "@/lib/audit/generate-audit";
-import { scorePage } from "@/lib/audit/score-page";
-import { saveAudit } from "@/lib/audit/store";
-import { getAudit } from "@/lib/audit/store";
+import { ExpandableEvidence } from "@/components/audit/expandable-evidence";
+import { getPersistedAudit } from "@/lib/audit/persistent-store";
 import type { AuditFinding, AuditRecommendation, AuditScore } from "@/lib/audit/types";
-import { urlFromAuditId } from "@/lib/audit/utils";
+import { totalScore } from "@/lib/audit/utils";
 import { cn } from "@/lib/utils";
 
 export const maxDuration = 60;
+export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 function scoreTone(score: number, max: number) {
   const percent = (score / max) * 100;
@@ -47,7 +49,7 @@ function ScoreCard({ score }: { score: AuditScore }) {
                   {item.points}/{item.max}
                 </span>
               </div>
-              <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500">{item.evidence}</p>
+              <ExpandableEvidence>{item.evidence}</ExpandableEvidence>
             </div>
           ))}
         </div>
@@ -110,33 +112,98 @@ function RecommendationBlock({ recommendation }: { recommendation: AuditRecommen
 
 export default async function AuditReportPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  let audit = getAudit(id);
-
-  if (!audit) {
-    const url = urlFromAuditId(id);
-
-    if (url) {
-      const extractedData = await crawlUrl(url);
-      const scores = scorePage(extractedData);
-      const report = generateAuditReport(id, extractedData, scores);
-      const createdAt = new Date().toISOString();
-
-      audit = saveAudit({
-        id,
-        input: { url },
-        extractedData,
-        scores,
-        report,
-        createdAt,
-      });
-    }
-  }
+  const audit = await getPersistedAudit(id);
 
   if (!audit) {
     notFound();
   }
 
-  const { report, extractedData } = audit;
+  if (audit.status !== "failed" && (!audit.report_json || !audit.extracted_json)) {
+    return (
+      <main className="min-h-screen bg-slate-50 text-slate-950">
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto max-w-5xl px-6 py-6 sm:px-8 lg:px-10">
+            <Link href="/audit" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-slate-950">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Back to audit
+            </Link>
+          </div>
+        </section>
+        <section className="mx-auto max-w-5xl px-6 py-16 sm:px-8 lg:px-10">
+          <div className="rounded-lg border border-orange-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-orange-50 text-orange-700">
+                <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-700">Audit queued</p>
+                <h1 className="mt-2 text-3xl font-semibold text-slate-950">Your report is waiting for the audit worker.</h1>
+              </div>
+            </div>
+            <dl className="mt-8 space-y-4 text-sm">
+              <div>
+                <dt className="font-semibold text-slate-800">URL</dt>
+                <dd className="mt-1 break-all text-slate-600">{audit.input_url}</dd>
+              </div>
+              <div>
+                <dt className="font-semibold text-slate-800">Status</dt>
+                <dd className="mt-1 capitalize text-slate-600">{audit.status}</dd>
+              </div>
+            </dl>
+            <p className="mt-8 max-w-3xl text-sm leading-6 text-slate-600">
+              Refresh this page after the worker has processed the audit. Batch and prospecting audits are processed outside Vercel so the website stays fast.
+            </p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (audit.status === "failed" || !audit.report_json || !audit.extracted_json) {
+    return (
+      <main className="min-h-screen bg-slate-50 text-slate-950">
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto max-w-5xl px-6 py-6 sm:px-8 lg:px-10">
+            <Link href="/audit" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-slate-950">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Back to audit
+            </Link>
+          </div>
+        </section>
+        <section className="mx-auto max-w-5xl px-6 py-16 sm:px-8 lg:px-10">
+          <div className="rounded-lg border border-red-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-red-50 text-red-700">
+                <CircleAlert className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-red-700">Audit could not complete</p>
+                <h1 className="mt-2 text-3xl font-semibold text-slate-950">The crawler could not produce a full report.</h1>
+              </div>
+            </div>
+            <dl className="mt-8 space-y-4 text-sm">
+              <div>
+                <dt className="font-semibold text-slate-800">URL</dt>
+                <dd className="mt-1 break-all text-slate-600">{audit.input_url}</dd>
+              </div>
+              <div>
+                <dt className="font-semibold text-slate-800">Reason</dt>
+                <dd className="mt-1 text-slate-600">{audit.error || "The site blocked or timed out during the crawl."}</dd>
+              </div>
+            </dl>
+            <p className="mt-8 max-w-3xl text-sm leading-6 text-slate-600">
+              This still counts as your free audit attempt because the backend had to start a crawl. If this was your own site,
+              check bot protection, redirects, TLS, and whether the page can be loaded by a headless browser.
+            </p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  const report = audit.report_json;
+  const extractedData = audit.extracted_json;
+  const overallScore = totalScore(report.scores);
   const scoreSummary = report.scores.map((score) => `${score.category} ${score.score}/${score.max}`).join(" | ");
 
   return (
@@ -164,11 +231,11 @@ export default async function AuditReportPage({ params }: { params: Promise<{ id
           <div className="rounded-lg border border-white/10 bg-white/[0.06] p-6">
             <p className="text-sm text-slate-300">Overall score</p>
             <div className="mt-3 flex items-end gap-2">
-              <span className="text-7xl font-semibold tabular-nums text-white">{report.overallScore}</span>
+              <span className="text-7xl font-semibold tabular-nums text-white">{overallScore}</span>
               <span className="pb-3 text-xl text-slate-400">/100</span>
             </div>
             <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full rounded-full bg-orange-500" style={{ width: `${report.overallScore}%` }} />
+              <div className="h-full rounded-full bg-orange-500" style={{ width: `${overallScore}%` }} />
             </div>
             <p className="mt-4 text-xs leading-5 text-slate-400">{scoreSummary}</p>
           </div>
@@ -218,6 +285,7 @@ export default async function AuditReportPage({ params }: { params: Promise<{ id
                   Schema: report.evidenceSummary.schema,
                   Sitemap: report.evidenceSummary.sitemap,
                   Robots: report.evidenceSummary.robots,
+                  "External presence": report.evidenceSummary.externalPresence.join(" "),
                   "Images missing alt": report.evidenceSummary.imagesMissingAlt,
                   "CTA text found": report.evidenceSummary.ctaTextFound.join(", ") || "Not found",
                 }).map(([label, value]) => (

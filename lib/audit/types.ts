@@ -42,6 +42,22 @@ export interface AvailabilityCheck {
   opportunities?: string[];
 }
 
+export interface ExternalPresenceCheck {
+  status: CheckStatus;
+  summary: string;
+  evidence: string[];
+  provider?: string;
+  error?: string;
+}
+
+export interface ExternalPresenceChecks {
+  googleBusinessProfile: ExternalPresenceCheck;
+  directoryPresence: ExternalPresenceCheck;
+  backlinks: ExternalPresenceCheck;
+  redditForumMentions: ExternalPresenceCheck;
+  competitorComparison: ExternalPresenceCheck;
+}
+
 export interface AuditExtractedData {
   url: string;
   finalUrl: string;
@@ -76,6 +92,7 @@ export interface AuditExtractedData {
   canonicalConsistency: CheckStatus;
   mobileViewport: CheckStatus;
   speed: AvailabilityCheck;
+  externalPresence: ExternalPresenceChecks;
 }
 
 export interface AuditScoreItem {
@@ -155,6 +172,7 @@ export interface AuditReport {
     schema: string;
     sitemap: string;
     robots: string;
+    externalPresence: string[];
     imagesMissingAlt: number;
     ctaTextFound: string[];
   };

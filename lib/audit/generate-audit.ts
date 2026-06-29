@@ -308,6 +308,18 @@ function makeRewrittenSection(data: AuditExtractedData) {
   };
 }
 
+function externalPresenceSummary(data: AuditExtractedData) {
+  const checks = data.externalPresence;
+
+  return [
+    `Google Business Profile: ${statusLabel(checks.googleBusinessProfile.status)}. ${checks.googleBusinessProfile.summary}`,
+    `Directories: ${statusLabel(checks.directoryPresence.status)}. ${checks.directoryPresence.summary}`,
+    `Backlinks: ${statusLabel(checks.backlinks.status)}. ${checks.backlinks.summary}`,
+    `Reddit/forum mentions: ${statusLabel(checks.redditForumMentions.status)}. ${checks.redditForumMentions.summary}`,
+    `Competitors: ${statusLabel(checks.competitorComparison.status)}. ${checks.competitorComparison.summary}`,
+  ];
+}
+
 export function generateAuditReport(id: string, data: AuditExtractedData, scores: AuditScore[]): AuditReport {
   const overallScore = totalScore(scores);
   const pageName = data.h1 || data.title || titleCaseFromDomain(data.domain);
@@ -353,6 +365,7 @@ export function generateAuditReport(id: string, data: AuditExtractedData, scores
       schema: data.jsonLd.length > 0 ? `Found ${data.jsonLd.length}` : "Not found",
       sitemap: statusLabel(data.sitemapXml.status),
       robots: statusLabel(data.robotsTxt.status),
+      externalPresence: externalPresenceSummary(data),
       imagesMissingAlt: data.imagesMissingAlt.length,
       ctaTextFound: data.ctas.map((cta) => cta.text).slice(0, 8),
     },
@@ -369,7 +382,7 @@ export function generateAuditReport(id: string, data: AuditExtractedData, scores
       data.speed.status === "found"
         ? "Speed scoring uses mobile PageSpeed Insights performance data when Google returns a result. Treat it as a directional lab score, not a full Core Web Vitals history."
         : "Speed scoring was not checked because PageSpeed Insights did not return a usable result.",
-      "Directory presence, Google Business Profile checks, backlinks, Reddit/forum mentions, and competitor comparisons still require external data providers before this audit can score them honestly.",
+      "External presence checks now run as evidence-backed modules. Google Business Profile needs GOOGLE_PLACES_API_KEY, Reddit/forum mentions use Reddit public search when available, and directory, backlink, and competitor checks remain not checked until provider APIs are connected.",
     ],
   };
 }

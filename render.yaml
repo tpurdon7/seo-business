@@ -1,0 +1,26 @@
+services:
+  - type: worker
+    name: better-search-audit-worker
+    runtime: node
+    plan: starter
+    region: frankfurt
+    buildCommand: npm ci
+    startCommand: npm run audit:worker
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: PAGESPEED_API_KEY
+        sync: false
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: AUDIT_WORKER_POLL_MS
+        value: "5000"
+      - key: AUDIT_WORKER_MAX_ITEMS
+        value: "0"

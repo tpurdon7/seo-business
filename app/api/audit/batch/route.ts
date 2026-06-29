@@ -1,20 +1,24 @@
 import { NextResponse } from "next/server";
 
-import { auditApiCorsHeaders } from "@/lib/audit/api-headers";
-import { createBatchAuditJob, getBatchAuditJob } from "@/lib/audit/batch-store";
-import { processNextQueuedBatchAudit } from "@/lib/audit/process-batch-job";
+import { auditCorsHeaders } from "@/lib/audit/api-headers";
+import { createBatchAuditForActor, createBatchAuditForApiToken } from "@/lib/audit/audit-service";
+import { isConfiguredAdmin } from "@/lib/auth/admin";
+import { authenticateRequest } from "@/lib/auth/actor";
+import { hashApiToken } from "@/lib/auth/tokens";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-export async function OPTIONS() {
+export async function OPTIONS(request: Request) {
   return new Response(null, {
     status: 204,
-    headers: auditApiCorsHeaders,
+    headers: auditCorsHeaders(request),
   });
 }
 
 export async function POST(request: Request) {
+  const headers = auditCorsHeaders(request);
+
   try {
     const body = (await request.json()) as {
       urls?: unknown;
@@ -22,31 +26,41 @@ export async function POST(request: Request) {
     };
 
     if (!Array.isArray(body.urls) || body.urls.length === 0) {
-      return NextResponse.json({ error: "Please provide at least one URL." }, { status: 400, headers: auditApiCorsHeaders });
+      return NextResponse.json({ error: "Please provide at least one URL." }, { status: 400, headers });
     }
 
     const urls = body.urls.filter((url): url is string => typeof url === "string" && url.trim().length > 0);
 
     if (urls.length === 0) {
-      return NextResponse.json({ error: "Please provide at least one valid URL." }, { status: 400, headers: auditApiCorsHeaders });
+      return NextResponse.json({ error: "Please provide at least one valid URL." }, { status: 400, headers });
     }
 
-    const job = createBatchAuditJob(urls);
+    const authorization = request.headers.get("authorization");
+    const bearerToken = authorization?.toLowerCase().startsWith("bearer ") ? authorization.slice("bearer ".length).trim() : "";
+    const job = bearerToken.startsWith("bsa_")
+      ? await createBatchAuditForApiToken(hashApiToken(bearerToken), urls)
+      : await (async () => {
+          const actor = await authenticateRequest(request);
 
-    await processNextQueuedBatchAudit(job.jobId);
+          if (!actor) {
+            return null;
+          }
 
-    const responseJob = getBatchAuditJob(job.jobId) ?? job;
+          if (!isConfiguredAdmin(actor.email)) {
+            throw new Error("Batch audits are restricted to Better Search administrators.");
+          }
 
-    return NextResponse.json(
-      {
-        jobId: responseJob.jobId,
-        status: responseJob.status,
-        audits: responseJob.audits,
-      },
-      { headers: auditApiCorsHeaders },
-    );
+          return createBatchAuditForActor(actor, urls);
+        })();
+
+    if (!job) {
+      return NextResponse.json({ error: "Please sign in before running an audit." }, { status: 401, headers });
+    }
+
+    return NextResponse.json(job, { headers });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Batch audit could not be created.";
-    return NextResponse.json({ error: message }, { status: 500, headers: auditApiCorsHeaders });
+    const status = message.includes("Invalid or revoked") ? 401 : message.includes("restricted") ? 403 : message.includes("URL") ? 400 : 500;
+    return NextResponse.json({ error: message }, { status, headers });
   }
 }

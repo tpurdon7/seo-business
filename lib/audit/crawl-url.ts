@@ -1,13 +1,16 @@
 import { extractPageData } from "@/lib/audit/extract-page-data";
 import { checkPageSpeed } from "@/lib/audit/check-page-speed";
+import { checkExternalPresence } from "@/lib/audit/check-external-presence";
 import type { AuditExtractedData, AvailabilityCheck } from "@/lib/audit/types";
+import { assertPublicNetworkUrl } from "@/lib/audit/url-security";
 import { normalizeUrl } from "@/lib/audit/utils";
 
 const REQUEST_TIMEOUT_MS = 18_000;
 
 async function checkAvailability(url: string): Promise<AvailabilityCheck> {
   try {
-    const response = await fetch(url, {
+    const safeUrl = await assertPublicNetworkUrl(url);
+    const response = await fetch(safeUrl, {
       method: "GET",
       signal: AbortSignal.timeout(8_000),
       cache: "no-store",
@@ -30,6 +33,12 @@ async function checkAvailability(url: string): Promise<AvailabilityCheck> {
   }
 }
 
+async function assertRequestUrl(url: string) {
+  const parsed = new URL(url);
+  if (!["http:", "https:"].includes(parsed.protocol)) return;
+  await assertPublicNetworkUrl(url);
+}
+
 async function crawlWithPuppeteer(url: string, robotsUrl: string, sitemapUrl: string): Promise<AuditExtractedData> {
   const sparticuzChromium = (await import("@sparticuz/chromium")).default;
   const puppeteer = await import("puppeteer-core");
@@ -43,6 +52,12 @@ async function crawlWithPuppeteer(url: string, robotsUrl: string, sitemapUrl: st
 
   try {
     await page.setUserAgent("Mozilla/5.0 (compatible; BetterSearchAuditBot/0.1; +https://bettersearch.dev)");
+    await page.setRequestInterception(true);
+    page.on("request", (request) => {
+      void assertRequestUrl(request.url())
+        .then(() => request.continue())
+        .catch(() => request.abort("blockedbyclient"));
+    });
 
     const response = await page.goto(url, {
       waitUntil: "domcontentloaded",
@@ -53,10 +68,12 @@ async function crawlWithPuppeteer(url: string, robotsUrl: string, sitemapUrl: st
 
     const extracted = await extractPageData(page);
     const finalUrl = page.url();
-    const [robotsTxt, sitemapXml, speed] = await Promise.all([
+    await assertPublicNetworkUrl(finalUrl);
+    const [robotsTxt, sitemapXml, speed, externalPresence] = await Promise.all([
       checkAvailability(robotsUrl),
       checkAvailability(sitemapUrl),
       checkPageSpeed(finalUrl),
+      checkExternalPresence(new URL(finalUrl).hostname, extracted.h1 || extracted.title),
     ]);
 
     return {
@@ -71,6 +88,7 @@ async function crawlWithPuppeteer(url: string, robotsUrl: string, sitemapUrl: st
       canonicalConsistency: canonicalConsistency(finalUrl, extracted.canonicalUrl),
       mobileViewport: extracted.viewport ? "found" : "not_found",
       speed,
+      externalPresence,
     };
   } finally {
     await browser.close().catch(() => undefined);
@@ -89,6 +107,15 @@ async function crawlWithPlaywright(url: string, robotsUrl: string, sitemapUrl: s
   const page = await context.newPage();
 
   try {
+    await page.route("**/*", async (route) => {
+      try {
+        await assertRequestUrl(route.request().url());
+        await route.continue();
+      } catch {
+        await route.abort("blockedbyclient");
+      }
+    });
+
     const response = await page.goto(url, {
       waitUntil: "domcontentloaded",
       timeout: REQUEST_TIMEOUT_MS,
@@ -98,10 +125,12 @@ async function crawlWithPlaywright(url: string, robotsUrl: string, sitemapUrl: s
 
     const extracted = await extractPageData(page);
     const finalUrl = page.url();
-    const [robotsTxt, sitemapXml, speed] = await Promise.all([
+    await assertPublicNetworkUrl(finalUrl);
+    const [robotsTxt, sitemapXml, speed, externalPresence] = await Promise.all([
       checkAvailability(robotsUrl),
       checkAvailability(sitemapUrl),
       checkPageSpeed(finalUrl),
+      checkExternalPresence(new URL(finalUrl).hostname, extracted.h1 || extracted.title),
     ]);
 
     return {
@@ -116,6 +145,7 @@ async function crawlWithPlaywright(url: string, robotsUrl: string, sitemapUrl: s
       canonicalConsistency: canonicalConsistency(finalUrl, extracted.canonicalUrl),
       mobileViewport: extracted.viewport ? "found" : "not_found",
       speed,
+      externalPresence,
     };
   } finally {
     await context.close().catch(() => undefined);
@@ -140,7 +170,7 @@ function canonicalConsistency(finalUrl: string, canonicalUrl: string | null) {
 }
 
 export async function crawlUrl(rawUrl: string): Promise<AuditExtractedData> {
-  const url = normalizeUrl(rawUrl);
+  const url = await assertPublicNetworkUrl(normalizeUrl(rawUrl));
   const parsed = new URL(url);
   const robotsUrl = `${parsed.origin}/robots.txt`;
   const sitemapUrl = `${parsed.origin}/sitemap.xml`;

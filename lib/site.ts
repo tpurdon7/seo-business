@@ -1869,6 +1869,9 @@ export const trustPages: Record<TrustPage["slug"], TrustPage> = {
 export const sitemapPages = [
   homeSeo.path,
   "/about",
+  "/contact",
+  "/privacy",
+  "/terms",
   "/methodology",
   "/seo-for-high-trust-service-businesses",
   "/seo-for-clinics",

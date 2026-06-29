@@ -19,6 +19,7 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { PublicAuditForm } from "@/components/public-audit-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { bookingLink, homeFaqs, industryPageLinks } from "@/lib/site";
@@ -196,43 +197,43 @@ const outcomes = [
 const pricing = [
   {
     name: "Visibility Sprint",
-    price: "£2,000",
+    price: "£1,000",
     cadence: "one-time",
     description:
-      "For businesses that want to understand what is stopping them from being found online.",
+      "A focused diagnosis and 90-day plan before you commit to ongoing work.",
     features: [
-      "Google visibility audit",
-      "AI search visibility check",
-      "Website SEO review",
-      "Competitor opportunity map",
-      "Clear action plan",
+      "Review of up to 30 indexable pages",
+      "Google and AI-search visibility review",
+      "Technical, service-page, local and trust checks",
+      "Opportunity map for up to 3 competitors",
+      "Prioritised report, 90-day plan and findings call",
     ],
   },
   {
     name: "Growth Visibility",
-    price: "£2,200",
+    price: "£1,100",
     cadence: "per month",
-    description: "For businesses that want ongoing SEO and GEO support.",
+    description: "Focused monthly implementation for an established service-business website.",
     features: [
-      "Monthly SEO and GEO strategy",
-      "Website improvements",
-      "Content planning",
-      "Google ranking tracking",
-      "AI search visibility tracking",
+      "Month-one baseline and 90-day strategy",
+      "Up to 2 substantive work items each month",
+      "Google and AI-search visibility tracking",
+      "Technical, page and content-priority monitoring",
+      "Monthly report and 45-minute review call",
     ],
     featured: true,
   },
   {
     name: "Authority Growth",
-    price: "£3,200",
+    price: "£1,600",
     cadence: "per month",
-    description: "For businesses in competitive, trust-led markets.",
+    description: "A broader programme for competitive markets where authority and proof matter.",
     features: [
-      "Full SEO and GEO growth program",
-      "Website and content strategy",
-      "Online authority building",
-      "AI search positioning",
-      "Clear monthly reporting",
+      "Up to 3 substantive work items each month",
+      "Website and content architecture planning",
+      "Authority opportunities and expert-proof planning",
+      "Deeper AI-search and competitor review",
+      "Monthly strategy call and quarterly roadmap",
     ],
   },
 ];
@@ -325,144 +326,6 @@ function MiniMetric({
       </div>
       <p className="text-sm text-slate-500">{label}</p>
       <p className="mt-1 text-2xl font-semibold text-slate-950 tabular-nums">{value}</p>
-    </div>
-  );
-}
-
-function HeroDashboard() {
-  const reduceMotion = useReducedMotion();
-
-  return (
-    <div className="relative mx-auto w-full max-w-[620px]">
-      <motion.div
-        className="relative overflow-hidden rounded-lg border border-slate-200 bg-white p-3 shadow-[0_28px_80px_rgba(15,23,42,0.18)]"
-        initial={reduceMotion ? false : { opacity: 0, y: 30, scale: 0.98 }}
-        animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.8, ease: [0.2, 1, 0.22, 1] }}
-      >
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-orange-100/70 to-transparent" />
-        <div className="relative rounded-lg border border-slate-200 bg-slate-950 p-3 text-white">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold">Audit Snapshot</p>
-              <p className="text-xs text-slate-400">What we review first</p>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-xs text-slate-200">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              Evidence-first review
-            </div>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-lg bg-white p-4 text-slate-950 sm:col-span-2">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-sm text-slate-500">Core visibility priorities</p>
-                  <p className="text-3xl font-semibold">Start with the pages that earn trust</p>
-                </div>
-                <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
-                  4-step process
-                </span>
-              </div>
-              <div className="grid gap-3">
-                {[
-                  ["1. Crawlability and indexation", "Robots, sitemap, canonicals, and page discovery."],
-                  ["2. Core commercial pages", "Service, location, about, and methodology pages."],
-                  ["3. Trust and answer structure", "FAQs, credentials, process notes, and clear headings."],
-                  ["4. Internal linking and schema", "Support how Google and AI tools connect the site."],
-                ].map(([title, copy], index) => (
-                  <motion.div
-                    className="rounded-lg border border-slate-200 bg-slate-50 p-4"
-                    key={title}
-                    initial={reduceMotion ? false : { opacity: 0, x: 18 }}
-                    animate={reduceMotion ? undefined : { opacity: 1, x: 0 }}
-                    transition={{ delay: 0.12 * index, duration: 0.4, ease: "easeOut" }}
-                  >
-                    <p className="font-semibold text-slate-950">{title}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{copy}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            <div className="grid gap-3">
-              <MiniStat label="Priority order" value="Core pages first" tone="orange" />
-              <MiniStat label="Trust review" value="Real signals only" tone="green" />
-              <MiniStat label="AI readiness" value="Clear answers" tone="blue" />
-            </div>
-          </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg bg-white/10 p-4">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm text-slate-300">What gets checked</p>
-                <BarChart3 className="h-4 w-4 text-orange-300" aria-hidden="true" />
-              </div>
-              <div className="space-y-2">
-                {["titles and canonicals", "internal links", "FAQ and schema"].map(
-                  (item, index) => (
-                    <div
-                      className="flex items-center justify-between gap-3 rounded-lg bg-white/5 px-3 py-2 text-xs"
-                      key={item}
-                    >
-                      <span className="text-slate-300">{item}</span>
-                      <span className="font-semibold text-white">
-                        {["first", "next", "support"][index]}
-                      </span>
-                    </div>
-                  ),
-                )}
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-lg bg-white/10 p-4">
-              <div className="absolute inset-x-0 top-0 h-16 animate-[scan_5s_ease-in-out_infinite] bg-gradient-to-b from-white/20 to-transparent" />
-              <p className="text-sm text-slate-300">Answer-ready structure</p>
-              <div className="mt-4 space-y-3">
-                {[
-                  "Direct definitions",
-                  "Useful FAQs",
-                  "Descriptive headings",
-                  "Matching schema",
-                ].map((item, index) => (
-                  <motion.div
-                    className="rounded-lg bg-white/5 px-3 py-2 text-sm text-slate-200"
-                    key={item}
-                    initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                    animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 * index, duration: 0.35 }}
-                  >
-                    {item}
-                  </motion.div>
-                ))}
-              </div>
-              <p className="mt-4 text-2xl font-semibold">Built for Google and AI search</p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-function MiniStat({
-  label,
-  value,
-  tone,
-}: {
-  label: string;
-  value: string;
-  tone: "orange" | "green" | "blue";
-}) {
-  const tones = {
-    orange: "bg-orange-100 text-orange-700",
-    green: "bg-emerald-100 text-emerald-700",
-    blue: "bg-sky-100 text-sky-700",
-  };
-
-  return (
-    <div className="rounded-lg bg-white p-4 text-slate-950">
-      <p className="text-xs text-slate-500">{label}</p>
-      <div className="mt-2 flex items-center justify-between gap-3">
-        <p className="text-xl font-semibold tabular-nums">{value}</p>
-        <span className={cn("h-2.5 w-2.5 rounded-full", tones[tone])} />
-      </div>
     </div>
   );
 }
@@ -686,22 +549,22 @@ export function HomePage() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 pt-16 sm:px-6 sm:pt-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:pb-24 lg:pt-24">
           <Reveal>
             <div className="mb-4 text-sm font-medium text-slate-950 sm:text-base">
-              SEO + GEO for UK service businesses
+              Free SEO + AI search audit generator
             </div>
             <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] text-slate-950 sm:text-5xl lg:text-6xl">
-              Get found on Google and in AI search.
+              Generate a free visibility audit for your website.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-              We help high-trust service businesses across Cornwall, Surrey, and the wider UK
-              appear when people search for what they do.
+              Enter your URL, email, and niche. Better Search will crawl the page and generate a
+              practical SEO, GEO, and AEO report you can read straight away.
             </p>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
               Built for clinics, consultants, professional firms, and specialist local businesses
-              that need to be visible, credible, and easy to choose on Google and in AI search.
+              that need clearer visibility on Google and in AI search.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a className={buttonVariants({ size: "lg" })} href={bookingLink}>
-                Book a free visibility audit
+              <a className={buttonVariants({ size: "lg" })} href="#free-audit">
+                Generate my audit
                 <ArrowRight className="h-5 w-5" aria-hidden="true" />
               </a>
               <a className={buttonVariants({ variant: "secondary", size: "lg" })} href="#process">
@@ -729,7 +592,9 @@ export function HomePage() {
               />
             </div>
           </Reveal>
-          <HeroDashboard />
+          <div id="free-audit">
+            <PublicAuditForm />
+          </div>
         </div>
       </section>
 
@@ -1104,7 +969,7 @@ export function HomePage() {
               <div className="rounded-lg border border-orange-400/30 bg-white p-6 text-slate-950 shadow-[0_24px_70px_rgba(249,115,22,0.16)]">
                 <p className="text-sm font-semibold uppercase text-orange-700">One-time project</p>
                 <div className="mt-4 flex items-end gap-2">
-                  <p className="text-5xl font-semibold tabular-nums">£2,500</p>
+                  <p className="text-5xl font-semibold tabular-nums">£1,250</p>
                   <p className="pb-1 text-sm text-slate-500">one-time</p>
                 </div>
                 <p className="mt-4 leading-7 text-slate-600">
@@ -1164,13 +1029,9 @@ export function HomePage() {
                   missed opportunities.
                 </p>
               </div>
-              <a
-                className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto")}
-                href={bookingLink}
-              >
-                Book a free visibility audit
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
-              </a>
+              <div className="w-full max-w-xl lg:max-w-lg">
+                <PublicAuditForm compact />
+              </div>
             </div>
           </div>
         </Reveal>

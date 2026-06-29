@@ -21,6 +21,7 @@ type PageEvaluation = Omit<
   | "canonicalConsistency"
   | "mobileViewport"
   | "speed"
+  | "externalPresence"
 >;
 
 interface EvaluatablePage {

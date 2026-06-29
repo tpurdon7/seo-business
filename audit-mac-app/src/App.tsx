@@ -10,15 +10,24 @@ import { Settings } from "./components/Settings";
 import { UrlInput } from "./components/UrlInput";
 
 const settingsKey = "better-search-audit-settings";
+const logoSrc = "/scout-logo.png";
+const productionApiBaseUrl = "https://bettersearch.dev";
+const legacyApiBaseUrls = new Set(["https://seo-growth-agency.vercel.app"]);
 const defaultSettings: AppSettings = {
-  apiBaseUrl: "https://seo-growth-agency.vercel.app",
+  apiBaseUrl: productionApiBaseUrl,
   apiKey: "",
 };
 
 function loadSettings() {
   try {
     const stored = localStorage.getItem(settingsKey);
-    return stored ? { ...defaultSettings, ...JSON.parse(stored) } : defaultSettings;
+    const settings = stored ? { ...defaultSettings, ...JSON.parse(stored) } : defaultSettings;
+    const apiBaseUrl = String(settings.apiBaseUrl || "").replace(/\/$/, "");
+
+    return {
+      ...settings,
+      apiBaseUrl: legacyApiBaseUrls.has(apiBaseUrl) ? productionApiBaseUrl : settings.apiBaseUrl,
+    };
   } catch {
     return defaultSettings;
   }
@@ -119,9 +128,12 @@ export function App() {
   return (
     <main className="app-shell">
       <header className="app-header">
-        <div>
+        <div className="brand-lockup">
+          <img className="brand-logo" src={logoSrc} alt="" aria-hidden="true" />
+          <div>
           <p>Better Search</p>
           <h1>Audit Machine</h1>
+          </div>
         </div>
         <button className="ghost-button" type="button" onClick={resetJobState} disabled={running}>
           Clear
@@ -129,23 +141,14 @@ export function App() {
       </header>
 
       <section className={running ? "crab-stage crab-stage-active" : "crab-stage"}>
-        <div className="crab-scene" aria-hidden="true">
-          <div className="crab-shadow" />
-          <div className="crab">
-            <span className="claw claw-left" />
-            <span className="claw claw-right" />
-            <span className="eye eye-left" />
-            <span className="eye eye-right" />
-            <span className="shell" />
-            <span className="leg leg-1" />
-            <span className="leg leg-2" />
-            <span className="leg leg-3" />
-            <span className="leg leg-4" />
-          </div>
+        <div className="scout-scene" aria-hidden="true">
+          <div className="scout-glow" />
+          <img className="scout-logo" src={logoSrc} alt="" />
+          <div className="scout-shadow" />
         </div>
         <div>
-          <span className="status-kicker">{running ? "Claude crab is auditing" : "Ready for URLs"}</span>
-          <h2>{running ? "Claws are swinging through the audit queue" : "Drop, paste, or upload a prospect list"}</h2>
+          <span className="status-kicker">{running ? "Audit scout is checking" : "Ready for URLs"}</span>
+          <h2>{running ? "Scanning through the audit queue" : "Drop, paste, or upload a prospect list"}</h2>
           <p>{running ? "The Mac app is only sending URLs. The Better Search backend is crawling, scoring, and building the reports." : "Add one page or a list. Full page content stays with the backend crawl."}</p>
         </div>
       </section>

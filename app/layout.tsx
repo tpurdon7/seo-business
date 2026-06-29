@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 
+import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { homeSeo, logo, siteName, siteUrl } from "@/lib/site";
 
 const geistSans = Geist({
@@ -63,7 +65,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Suspense fallback={null}>
+          <AnalyticsTracker />
+        </Suspense>
+      </body>
     </html>
   );
 }

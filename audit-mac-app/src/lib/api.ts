@@ -29,13 +29,18 @@ export async function createBatchAudit(urls: string[], settings: AppSettings) {
       }),
     });
   } catch {
-    throw new Error(`Could not reach the Better Search backend at ${settings.apiBaseUrl}. Make sure the Next app is running.`);
+    throw new Error(`Could not reach the Better Search backend at ${settings.apiBaseUrl}. Check the API base URL and account token.`);
   }
 
   const payload = (await response.json()) as CreateBatchResponse | { error?: string };
 
   if (!response.ok) {
-    throw new Error("error" in payload && payload.error ? payload.error : "Audit job could not be created.");
+    const message = "error" in payload && payload.error ? payload.error : "Audit job could not be created.";
+    throw new Error(
+      response.status === 401
+        ? "Connect your Better Search account in Settings, then paste your Mac app token."
+        : message,
+    );
   }
 
   return payload as CreateBatchResponse;
@@ -49,13 +54,18 @@ export async function getAuditJob(jobId: string, settings: AppSettings) {
       headers: headers(settings),
     });
   } catch {
-    throw new Error(`Could not reach the Better Search backend at ${settings.apiBaseUrl}. Make sure the Next app is running.`);
+    throw new Error(`Could not reach the Better Search backend at ${settings.apiBaseUrl}. Check the API base URL and account token.`);
   }
 
   const payload = (await response.json()) as AuditJobResponse | { error?: string };
 
   if (!response.ok) {
-    throw new Error("error" in payload && payload.error ? payload.error : "Audit job could not be loaded.");
+    const message = "error" in payload && payload.error ? payload.error : "Audit job could not be loaded.";
+    throw new Error(
+      response.status === 401
+        ? "Your Mac app token is missing, invalid, or expired. Reconnect your account in Settings."
+        : message,
+    );
   }
 
   return payload as AuditJobResponse;

@@ -1,17 +1,18 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ArrowRight, BarChart3, BrainCircuit, FileSearch, Loader2, SearchCheck } from "lucide-react";
+import { BarChart3, BrainCircuit, FileSearch, SearchCheck } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { AuditRunner } from "@/app/audit/audit-runner";
+import { LoginForm } from "@/components/auth/login-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getUsageState } from "@/lib/audit/persistent-store";
+import { getCurrentUserFromCookies } from "@/lib/auth/actor";
+
+export const dynamic = "force-dynamic";
 
 const capabilities = [
   {
     title: "Rendered extraction",
-    description: "Uses Playwright so injected JSON-LD and client-rendered page content can be checked.",
+    description: "Uses browser rendering so injected JSON-LD and client-rendered content can be checked.",
     icon: SearchCheck,
   },
   {
@@ -20,45 +21,15 @@ const capabilities = [
     icon: BarChart3,
   },
   {
-    title: "Prospect-ready report",
-    description: "Creates a polished audit page with fixes, suggested copy, and a 30-day action plan.",
+    title: "Shareable report",
+    description: "Creates a report page you can revisit and share without requiring viewers to log in.",
     icon: FileSearch,
   },
 ];
 
-export default function AuditPage() {
-  const router = useRouter();
-  const [url, setUrl] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  async function runAudit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try {
-      const response = await fetch("/api/audit", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-      });
-
-      const payload = (await response.json()) as { id?: string; error?: string };
-
-      if (!response.ok || !payload.id) {
-        throw new Error(payload.error || "The audit could not be created.");
-      }
-
-      router.push(`/audit/${payload.id}`);
-    } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "The audit could not be created.");
-    } finally {
-      setLoading(false);
-    }
-  }
+export default async function AuditPage() {
+  const user = await getCurrentUserFromCookies();
+  const usage = user ? await getUsageState(user.id, user.email) : null;
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -68,55 +39,46 @@ export default function AuditPage() {
             <Link href="/" className="text-sm font-semibold text-white">
               Better Search
             </Link>
-            <Link href="/" className="text-sm font-medium text-slate-300 transition hover:text-white">
-              Back to site
-            </Link>
+            <div className="flex items-center gap-4">
+              {user ? (
+                <>
+                  <Link href="/account" className="text-sm font-medium text-slate-300 transition hover:text-white">
+                    Account
+                  </Link>
+                  <form action="/auth/signout" method="post">
+                    <button type="submit" className="text-sm font-medium text-slate-300 transition hover:text-white">
+                      Sign out
+                    </button>
+                  </form>
+                </>
+              ) : null}
+              <Link href="/" className="text-sm font-medium text-slate-300 transition hover:text-white">
+                Back to site
+              </Link>
+            </div>
           </header>
 
           <div className="grid flex-1 items-center gap-10 py-16 lg:grid-cols-[1.04fr_0.96fr]">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-300">
-                Internal SEO/GEO/AEO audit machine
+                Public SEO/GEO/AEO audit
               </p>
               <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-tight text-white sm:text-6xl">
-                Audit any landing page for Google and AI search visibility.
+                Audit one landing page for Google and AI search visibility.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                Paste a URL and get a structured report that scores SEO, GEO, AEO, CRO, and authority strength with evidence-backed fixes.
+                Sign in with email, run your launch audit, and get a shareable report with evidence-backed fixes.
               </p>
 
-              <form onSubmit={runAudit} className="mt-10 max-w-2xl rounded-lg border border-white/10 bg-white p-2 shadow-2xl shadow-black/30 sm:flex">
-                <label htmlFor="audit-url" className="sr-only">
-                  Landing page URL
-                </label>
-                <input
-                  id="audit-url"
-                  value={url}
-                  onChange={(event) => setUrl(event.target.value)}
-                  placeholder="https://example.com/landing-page"
-                  className="min-h-14 flex-1 rounded-md px-4 text-base text-slate-950 outline-none placeholder:text-slate-400"
-                  disabled={loading}
+              {user && usage ? (
+                <AuditRunner
+                  email={user.email ?? "your account"}
+                  freeAuditsUsed={usage.free_audits_used}
+                  freeAuditLimit={usage.free_audit_limit}
                 />
-                <Button type="submit" size="lg" className="mt-2 w-full sm:mt-0 sm:w-auto" disabled={loading}>
-                  {loading ? (
-                    <>
-                      <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                      Running audit
-                    </>
-                  ) : (
-                    <>
-                      Run audit
-                      <ArrowRight className="h-5 w-5" aria-hidden="true" />
-                    </>
-                  )}
-                </Button>
-              </form>
-
-              {error ? (
-                <div className="mt-4 max-w-2xl rounded-lg border border-red-300/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
-                  {error}
-                </div>
-              ) : null}
+              ) : (
+                <LoginForm />
+              )}
             </div>
 
             <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-2xl shadow-black/20 backdrop-blur">
@@ -139,7 +101,7 @@ export default function AuditPage() {
                 </div>
                 <div className="mt-6 grid grid-cols-2 gap-3 text-sm text-slate-300">
                   <div className="rounded-md bg-white/5 p-3">Rendered DOM</div>
-                  <div className="rounded-md bg-white/5 p-3">Schema check</div>
+                  <div className="rounded-md bg-white/5 p-3">Shareable report</div>
                   <div className="rounded-md bg-white/5 p-3">Evidence map</div>
                   <div className="rounded-md bg-white/5 p-3">Copy rewrite</div>
                 </div>
