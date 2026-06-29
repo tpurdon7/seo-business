@@ -5,6 +5,7 @@ import { createBatchAuditForActor, createBatchAuditForApiToken } from "@/lib/aud
 import { isConfiguredAdmin } from "@/lib/auth/admin";
 import { authenticateRequest } from "@/lib/auth/actor";
 import { hashApiToken } from "@/lib/auth/tokens";
+import { triggerAuditWorker } from "@/lib/audit/trigger-worker";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -57,6 +58,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Please sign in before running an audit." }, { status: 401, headers });
     }
 
+    await triggerAuditWorker();
     return NextResponse.json(job, { headers });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Batch audit could not be created.";

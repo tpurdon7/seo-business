@@ -1,11 +1,12 @@
 services:
-  - type: worker
+  - type: web
     name: better-search-audit-worker
     runtime: node
     plan: free
     region: frankfurt
     buildCommand: npm ci
-    startCommand: npm run audit:worker
+    startCommand: npm run audit:worker-server
+    healthCheckPath: /health
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
@@ -20,7 +21,5 @@ services:
         sync: false
       - key: GOOGLE_PLACES_API_KEY
         sync: false
-      - key: AUDIT_WORKER_POLL_MS
-        value: "5000"
-      - key: AUDIT_WORKER_MAX_ITEMS
-        value: "0"
+      - key: AUDIT_WORKER_TRIGGER_SECRET
+        sync: false

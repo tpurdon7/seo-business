@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "audit:worker": "node --env-file=.env.local scripts/process-audit-worker.mjs",
+    "audit:worker-server": "node scripts/audit-worker-server.mjs",
     "audit:regenerate": "node --env-file=.env.local scripts/regenerate-completed-audits.mjs",
     "audit:prepare-surrey": "node scripts/prepare-surrey-audit-input.mjs",
     "audit:public-links": "node --env-file=.env.local scripts/make-permanent-audit-links.mjs"
