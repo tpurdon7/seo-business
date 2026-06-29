@@ -1,0 +1,8 @@
+.git
+.next
+.vercel
+.env*
+node_modules
+audit-mac-app
+lead-packs
+output

@@ -1,11 +1,10 @@
 services:
   - type: web
     name: better-search-audit-worker
-    runtime: node
+    runtime: docker
     plan: free
     region: frankfurt
-    buildCommand: npm ci
-    startCommand: npm run audit:worker-server
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     autoDeploy: true
     envVars:
