@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 
 import { auditCorsHeaders } from "@/lib/audit/api-headers";
 import { AuditQuotaError, createQueuedSingleAuditForActor } from "@/lib/audit/audit-service";
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     }
 
     const result = await createQueuedSingleAuditForActor(actor, body.url);
-    await triggerAuditWorker();
+    after(triggerAuditWorker);
 
     return NextResponse.json({
       id: result.id,

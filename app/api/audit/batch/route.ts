@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 
 import { auditCorsHeaders } from "@/lib/audit/api-headers";
 import { createBatchAuditForActor, createBatchAuditForApiToken } from "@/lib/audit/audit-service";
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Please sign in before running an audit." }, { status: 401, headers });
     }
 
-    await triggerAuditWorker();
+    after(triggerAuditWorker);
     return NextResponse.json(job, { headers });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Batch audit could not be created.";
